@@ -1,0 +1,81 @@
+.container-fluid{
+    background-color: #e9f6ff;
+    height: 100vh;
+}
+
+.qr{
+    padding: 10%;
+    padding-top: 7%;
+}
+
+.qr-sign{
+    font-size: 4vw;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.qr-form{
+    background-color: #ffffff;
+    height: 70vh;
+}
+
+.qr-text{
+    margin: 0;
+    margin-top: 4%;
+    padding: 0;
+    padding-top: 4%;
+}
+
+.qr-frame{
+    height: 100%;
+    width: 100%;
+}
+
+.qr-image{
+    margin-top: 4%;
+}
+
+.download-container{
+    margin-top: 4%;
+}
+
+.download-button{
+    border: 2px solid transparent;
+    border-radius: 20px;
+    width: 350px;
+    height: 45px;
+    margin-top: 4%;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #d6eeff;
+}
+
+a{
+    font-size: 12px;
+}
+
+
+@media only screen and (max-width: 1000px) {
+    .qr-form{
+        background-color: #ffffff;
+        height: 70vh;
+    }
+
+    .qr-sign{
+        font-size: 4vw;
+        font-weight: bold;
+    }
+
+    .download-button{
+        border: 2px solid transparent;
+        border-radius: 20px;
+        width: 200px;
+        height: 45px;
+        margin-top: 4%;
+        background-color: #d6eeff;
+    }
+}
+  
+
+
+

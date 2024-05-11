@@ -1,0 +1,124 @@
+.container-fluid{
+    background-color: #e9f6ff;
+    height: 100vh;
+}
+
+.login{
+    padding: 10%;
+}
+
+.login-sign{
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.login-form{
+    background-color: #ffffff;
+    height: 60%;
+}
+
+.login-text{
+    margin: 0;
+    padding: 0;
+}
+
+.login-frame{
+    height: 100%;
+    width: 100%;
+}
+
+.logo-container{
+    padding-top: 4%;
+    padding-left: 0.8%;
+}
+
+.logo{
+    height: 70px;
+    width: 70px;
+}
+
+
+.input-username, .input-password{
+    border: 2px solid gray;
+    border-radius: 20px;
+    width: 350px;
+    padding-left: 10px;
+    height: 25px;
+}
+
+.forgot-password{
+    padding-left: 24%;
+}
+
+.checkbox{
+    margin-top: 4%;
+    margin-left: 10%;
+}
+
+.format{
+    display: block;
+}
+
+.format-remember, .format-forgot{
+    display: inline;
+}
+
+
+.create-format{
+    margin-top: 4%;
+}
+
+.login-button{
+    border: 2px solid transparent;
+    border-radius: 20px;
+    width: 350px;
+    height: 45px;
+    margin-top: 4%;
+    background-color: #d6eeff;
+}
+
+a, .remember{
+    font-size: 12px;
+}
+
+.input-text{
+    font-size: 12px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .login-form{
+        background-color: #ffffff;
+        height: 70vh;
+    }
+
+    .input-username, .input-password{
+        border: 2px solid gray;
+        border-radius: 20px;
+        width: 200px;
+        padding-left: 10px;
+        height: 25px;
+    }
+
+    .login-button{
+        border: 2px solid transparent;
+        border-radius: 20px;
+        width: 200px;
+        height: 45px;
+        margin-top: 4%;
+        background-color: #d6eeff;
+    }
+
+    .format-remember{
+        display: inline;
+    }
+
+    .checkbox{
+        margin-top: 4%;
+        margin-left: 23%;
+    }
+
+  }
+  
+
+
+

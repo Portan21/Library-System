@@ -1,0 +1,144 @@
+* {
+/* Change your font family */
+font-family: sans-serif;
+  }
+
+.select{
+  width: auto;
+  margin: 0;
+  padding: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  height: 20%;
+  border-width: 1px;
+  margin-right: 2px;
+  display: inline-block;
+}
+
+/* Modal styles */
+.modal2 {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  /* Modal content */
+  .modal-content2 {
+    background-color: #ffffff; /* Blue-themed background color */
+    color: #000000; /* White text color */
+    padding: 20px;
+    border: 1px solid #1a78b8; /* Matching border color */
+    width: 70%;
+    max-height: 600px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px; /* Rounded corners */
+    position: absolute;
+    float: left;
+    left: 50%;  
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow: auto;
+    z-index: 1001;
+  }
+
+  /* Adjust modal width on smaller screens */
+@media screen and (max-width: 768px) {
+  .modal-content2 {
+      width: 95%; /* Adjust the width for smaller screens */
+  }
+}
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .close:hover {
+    color: black;
+  }
+/* Remove underline and change text color for specific links */
+.my-link {
+    text-decoration: none;
+    color: black;
+  }
+
+    
+.content-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr {
+    background-color: #a8e0ff;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+    padding: 12px 15px;
+}
+
+.content-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #a8e0ff;
+}
+
+.content-table tbody tr.active-row {
+    font-weight: bold;
+    color: #a8e0ff;
+}
+
+#borrow-button {
+  background-color: #ffcc00d1; /* Yellow background color */
+  color: #000000; /* Black text color */
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px; /* Add some spacing between buttons */
+  margin: 10px auto;
+  margin-top: auto; /* Push the button to the bottom */
+  transition: transform 0.2s; /* Add a smooth transition for scaling */
+  bottom: -20px; /* Adjust the position from the bottom */
+  left: 45%; /* Center horizontally */
+  position: relative;
+
+}
+
+#borrow-button:hover {
+  transform: scale(1.1); /* Enlarge the button on hover */
+}
+
+/* Style for the Remove button */
+#remove-button {
+  background-color: transparent;
+  color: #000000; /* Black text color */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 10px auto;
+}

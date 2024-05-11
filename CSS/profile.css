@@ -1,0 +1,273 @@
+
+
+
+
+
+
+
+
+
+.container-fluid-profile{
+    background-color: #e9f6ff;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.profile{
+    width: 100%;
+}
+
+.profile-container{
+    width: 100%;
+    padding: 4%;
+    padding-top: 2%;
+    padding-left: 2%;
+    display: flex;
+}
+
+.profile-form{
+    background-color: #ffffff;
+    height: 40vh;
+}
+
+.profile-form-left{
+    height: auto;
+    margin-right: 1%;
+    padding-bottom: 15px;
+}
+
+.profile-form-right{
+    height: auto;
+    margin-left: 1%;
+    padding-bottom: 15px;
+}
+
+.profile-frame{
+    padding-left: 3%;    
+}
+
+.overview{
+    font-size: larger;
+    font-weight: bold;
+    padding-top: 3%;
+}
+
+.attendance{
+    margin: 0;
+    padding: 0;
+    margin-left: 3%;
+}
+
+.static-text{
+    padding-left: 15%;
+    font-weight: 700;
+}
+
+.qr{
+    padding: 10%;
+    padding-top: 7%;
+}
+
+.qr-sign{
+    font-size: 4vw;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.qr-form{
+    background-color: #ffffff;
+    height: 70vh;
+}
+
+.qr-text{
+    margin: 0;
+    padding: 0;
+    padding-top: 2%;
+}
+
+.qr-frame{
+    height: 100%;
+    width: 100%;
+}
+
+.qr-image{
+    margin-top: 2%;
+}
+
+.download-container{
+    margin-top: 4%;
+}
+
+.download-button, .view-button, .view-all{
+    border: 2px solid transparent;
+    border-radius: 20px;
+    width: 350px;
+    height: 45px;
+    margin-top: 12%;
+    background-color: #d6eeff;
+}
+
+.edit-button{
+    border: 2px solid transparent;
+    margin-left: 10px;
+    font-size: 14px;
+    border-radius: 20px;
+    width: auto;
+    height: auto;
+    background-color: rgb(223, 220, 220);
+}
+
+.edit-button:hover{
+    transition-duration: 0.3s;
+    background-color: rgb(165, 165, 165);
+}
+
+.view-all{
+    margin: 0;
+}
+
+a{
+    font-size: 12px;
+}
+
+
+@media only screen and (max-width: 1000px) {
+    .qr-form{
+        background-color: #ffffff;
+        height: 70vh;
+    }
+
+    .qr-sign{
+        font-size: 4vw;
+        font-weight: bold;
+    }
+
+    .download-button, .view-button, .view-all{
+        border: 2px solid transparent;
+        border-radius: 20px;
+        width: 200px;
+        height: 45px;
+        margin-top: 4%;
+        background-color: #d6eeff;
+    }
+
+    .overview-row{
+        width: auto;
+        display: flex;
+    }
+
+    .profile-frame{
+        padding-left: 4%;    
+    }
+
+    .static-text{
+        padding: 0;
+        font-size: 14px;
+    }
+
+    .static-info{
+        width: 30vw;
+    }
+
+    .dynamic-info{
+        width: 60vw;
+        font-size: 14px;
+    }
+}
+  
+
+@media only screen and (max-width: 1000px) {
+    .container-fluid{
+        height: 100%;
+        width: 100vw;
+    }
+
+    .profile-container{
+        height: auto;
+        width: 100%;
+        padding: 4%;
+        display: block;
+    }
+
+    .profile-container-top{
+        padding-bottom: 4%!important;
+    }
+
+    .profile-form{
+        background-color: #ffffff;
+    }
+
+    .profile-form-left{
+        margin-right: 0;
+    }
+
+    .profile-form-right{
+        margin-left: 0;
+        margin-top: 4%;
+    }
+}
+
+  
+/* Modal styles */
+.modal2 {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  /* Modal content */
+  .modal-content2 {
+    background-color: #ffffff; /* Blue-themed background color */
+    color: #000000; /* White text color */
+    padding: 20px;
+    border: 1px solid #1a78b8; /* Matching border color */
+    width: 70%;
+    max-height: 600px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px; /* Rounded corners */
+    position: absolute;
+    float: left;
+    left: 50%;  
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow: auto;
+    z-index: 1001;
+  }
+
+  /* Adjust modal width on smaller screens */
+@media screen and (max-width: 768px) {
+.modal-content2 {
+    width: 95%; /* Adjust the width for smaller screens */
+}
+
+.overview-text{
+    font-size: 90%;
+    word-wrap: break-word
+}
+}
+
+
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .close:hover {
+    color: black;
+}
+
+
+
