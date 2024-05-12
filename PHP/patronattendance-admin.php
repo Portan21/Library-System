@@ -255,22 +255,22 @@ while($rowbdate = mysqli_fetch_assoc($bdateres)){
         </div>
       </div>
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
+     <!-- Sidebar Menu -->
+     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-               <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Dashboard
+                Librarian
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./librarianprofiles-admin.php" class="nav-link">
+                <a href="./librarianprofiles-admin.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Librarian Profiles</p>
                 </a>
@@ -281,6 +281,17 @@ while($rowbdate = mysqli_fetch_assoc($bdateres)){
                   <p>Librarian Attendance</p>
                 </a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-item menu-open">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Patron
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="./patronprofiles-admin.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -381,7 +392,7 @@ while($rowbdate = mysqli_fetch_assoc($bdateres)){
     <script src = "../JavaScript/accountStatus - librarian.js"></script>
     <script src = "../JavaScript/changetype.js"></script>
     <script src = "../JavaScript/app2.js"></script>
-        
+    <script src="dist/js/adminlte.js"></script>
 
 </body>
 </html>

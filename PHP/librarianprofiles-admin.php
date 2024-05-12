@@ -264,7 +264,7 @@ while($rowbdate = mysqli_fetch_assoc($bdateres)){
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Dashboard
+                Librarian
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -281,6 +281,17 @@ while($rowbdate = mysqli_fetch_assoc($bdateres)){
                   <p>Librarian Attendance</p>
                 </a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Patron
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="./patronprofiles-admin.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -505,7 +516,9 @@ while($rowbdate = mysqli_fetch_assoc($bdateres)){
     <script src = "../JavaScript/accountStatus - librarian.js"></script>
     <script src = "../JavaScript/changetype.js"></script>
     <script src = "../JavaScript/app2.js"></script>
-        
+    <!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+
 
 </body>
 </html>
