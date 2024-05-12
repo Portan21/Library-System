@@ -108,113 +108,175 @@ if(isset($_POST["ret"])){
     </div>
     </nav>
 
-    <div class="container-fluid-profile">
-        <div class="row profile">
-
-            <div class="profile-container profile-container-top col-lg-12 pb-4">
-                <div class="profile-form profile-form-left col-lg-6 border-0 shadow">
-                    <div class="col-lg-11 profile-frame">
-                        <div class="col-lg-12">
-                            <p class="overview">Overview <a href="accountedit.php"><input class="edit-button pt-1 pb-1 pl-1 pr-1" type="submit" value="Edit"></a> </p>
-                            
-                            <hr>
-                        </div>
-                        <div class="row overview-row">
-                            <div class="col-lg-4 static-info">
-                                <p class="static-text">Name</p>
-                                <p class="static-text">Email</p>
-                                <p class="static-text">
-                                <?php
-                                if(!empty($_SESSION["typeID"])){
-                                    $accID = $_SESSION["accountID"];
-                                    $result = mysqli_query($conn, "SELECT nameType
-                                    FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
-                                    WHERE librarianID = '$accID'");
-                                    $row = mysqli_fetch_assoc($result);
-                                    echo "Account Type";}
-                                else{
-                                    echo "Course";
-                                }
-                                ?>   
-                                </p>
-                                <div class="col-lg-3">
-                                <a href='#'>
-                                    <input class="view-button" type="submit" value="View QR">
-                                </a>
-                                </div>
-                                <div id="myModal" class="modal2">
-                                    <div class="modal-content2">
-                                        <span class="close" id="closeModal">&times;</span>
-
-                                        <div class="row qr-text d-flex justify-content-center">
-                                            <div class="col-lg-12 d-flex justify-content-center">
-                                                <p id="qr-name" class="qr-sign"><?php echo $_SESSION["name"]; ?></p>
-                                            </div>
-                                        </div>
-
-                                        <div class="row qr-image d-flex justify-content-center">
-                                            <div class="col-lg-3 d-flex justify-content-center">
-                                                <img src="" id="qrcode">
-                                            </div>
-                                        </div>
-
-                                        <!-- Borrow button with ID for styling -->
-                                        <div class="row d-flex justify-content-center">
-                                            <div class="col-lg-3 d-flex justify-content-center">
-                                                <a download href="https://api.qrserver.com/v1/create-qr-code/?size=[250]x[250]&data=<?php echo $_SESSION["email"] ?>&margin=15&download=1">
-                                                <input class="download-button format" type="submit" value="DOWNLOAD QR">
-                                                </a>
-                                            </div>
-                                        </div>
+    <div class="container-fluid">
+        <div class="row mx-md-3 my-md-2 me-1">
+            <div class="col-lg border-0 shadow p-2 m-2">
+                <div class="col-lg-11">
+                    <div class="col-lg-12">
+                        <p class="overview">Overview <a href="accountedit.php"><input class="edit-button pt-1 pb-1 pl-1 pr-1" type="submit" value="Edit"></a> </p>
+                        
+                        <hr>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                        <table id="example" class="content-table table-borderless" style="table-layout:fixed; width:100%">
+                            <thead>
+                                <tr>
+                                    <th class='px-5 py-2'>Name</th>
+                                    <?php
+                                        if(!empty($_SESSION["typeID"])){
+                                            $accID = $_SESSION["accountID"];
+                                            $result = mysqli_query($conn, "SELECT name
+                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
+                                            WHERE librarianID = '$accID'");
+                                            $row = mysqli_fetch_assoc($result);
+                                            $name = $row['name'];
+                                            echo"
+                                            <td class='px-4 py-2 text-end overview-text'>$name</td>";
+                                        }
+                                        else{
+                                            $accID = $_SESSION["accountID"];
+                                            $result = mysqli_query($conn, "SELECT course, pt_name, email
+                                            FROM patron_acc
+                                            WHERE patronID = '$accID'");
+                                            $row = mysqli_fetch_assoc($result);
+                                            $name = $row['pt_name'];
+                                            $email = $row['email'];
+                                            $course = $row['course'];
+                                            echo"
+                                            <td class='px-4 py-2 text-end overview-text'>$name</td>";
+                                        }
+                                        ?>
                                     
-                                        <!-- Remove button with ID for styling 
-                                        <button id="remove-button">Remove</button>-->
-                                  
+                                </tr>  
+                                <tr>
+                                    <th class='px-5 py-2'>Email</th>
+                                    <?php
+                                        if(!empty($_SESSION["typeID"])){
+                                            $accID = $_SESSION["accountID"];
+                                            $result = mysqli_query($conn, "SELECT email
+                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
+                                            WHERE librarianID = '$accID'");
+                                            $row = mysqli_fetch_assoc($result);
+                                            $email = $row['email'];
+                                            echo"
+                                            <td class='px-4 py-2 text-end overview-text'>$email</td>";
+                                        }
+                                        else{
+                                            $accID = $_SESSION["accountID"];
+                                            $result = mysqli_query($conn, "SELECT course, pt_name, email
+                                            FROM patron_acc
+                                            WHERE patronID = '$accID'");
+                                            $row = mysqli_fetch_assoc($result);
+                                            $name = $row['pt_name'];
+                                            $email = $row['email'];
+                                            $course = $row['course'];
+                                            echo"
+                                            <td class='px-4 py-2 text-end overview-text'>$email</td>";
+                                        }
+                                    ?>
+                                </tr>  
+                                <tr>
+                                    <th class="px-5 py-2">
+                                        <?php
+                                        if(!empty($_SESSION["typeID"])){
+                                            $accID = $_SESSION["accountID"];
+                                            $result = mysqli_query($conn, "SELECT nameType
+                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
+                                            WHERE librarianID = '$accID'");
+                                            $row = mysqli_fetch_assoc($result);
+                                            echo "Account Type";}
+                                        else{
+                                            echo "Course";
+                                        }
+                                        ?>
+                                    </th>
+                                    <?php
+                                        if(!empty($_SESSION["typeID"])){
+                                            $accID = $_SESSION["accountID"];
+                                            $result = mysqli_query($conn, "SELECT nameType
+                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
+                                            WHERE librarianID = '$accID'");
+                                            $row = mysqli_fetch_assoc($result);
+                                            $type = $row['nameType'];
+                                            echo"
+                                            <td class='px-4 py-2 text-end overview-text'>$type</td>";
+                                        }
+                                        else{
+                                            $accID = $_SESSION["accountID"];
+                                            $result = mysqli_query($conn, "SELECT course, pt_name, email
+                                            FROM patron_acc
+                                            WHERE patronID = '$accID'");
+                                            $row = mysqli_fetch_assoc($result);
+                                            $name = $row['pt_name'];
+                                            $email = $row['email'];
+                                            $course = $row['course'];
+                                            echo"
+                                            <td class='px-4 py-2 text-end overview-text'>$course</td>";
+                                        }
+                                    ?>
+                                </tr>             
+                            </thead>
+                            
+                        </table>
+
+                            <div class="col-lg-3">
+                            <a href='#'>
+                                <input class="view-button" type="submit" value="View QR">
+                            </a>
+                            </div>
+                            <div id="myModal" class="modal2">
+                                <div class="modal-content2">
+                                    <span class="close" id="closeModal">&times;</span>
+
+                                    <div class="row qr-text d-flex justify-content-center">
+                                        <div class="col-lg-12 d-flex justify-content-center">
+                                            <p id="qr-name" class="qr-sign"><?php echo $_SESSION["name"]; ?></p>
+                                        </div>
                                     </div>
+
+                                    <div class="row qr-image d-flex justify-content-center">
+                                        <div class="col-lg-3 d-flex justify-content-center">
+                                            <img src="" id="qrcode">
+                                        </div>
+                                    </div>
+
+                                    <!-- Borrow button with ID for styling -->
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-lg-3 d-flex justify-content-center">
+                                            <a download href="https://api.qrserver.com/v1/create-qr-code/?size=[250]x[250]&data=<?php echo $_SESSION["email"] ?>&margin=15&download=1">
+                                            <input class="download-button format" type="submit" value="DOWNLOAD QR">
+                                            </a>
+                                        </div>
+                                    </div>
+                                
+                                    <!-- Remove button with ID for styling 
+                                    <button id="remove-button">Remove</button>-->
+                                
                                 </div>
                             </div>
-                            <div class="col-lg-8 dynamic-info">
-                                <p><?php echo $_SESSION["name"]; ?></p>
-                                <p><?php echo $_SESSION["email"]; ?></p>
-                                <p><?php
-                                if(!empty($_SESSION["typeID"])){
-                                    $accID = $_SESSION["accountID"];
-                                    $result = mysqli_query($conn, "SELECT nameType
-                                    FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
-                                    WHERE librarianID = '$accID'");
-                                    $row = mysqli_fetch_assoc($result);
-                                    echo $row['nameType'];}
-                                else{
-                                    $accID = $_SESSION["accountID"];
-                                    $result = mysqli_query($conn, "SELECT course
-                                    FROM patron_acc
-                                    WHERE patronID = '$accID'");
-                                    $row = mysqli_fetch_assoc($result);
-                                    echo $row['course'];}
-                                ?>   
-                                </p>
-                            </div>
-                            
-                        </div>       
+                        </div>
+                        
                     </div>
                 </div>
-                <div class="profile-form profile-form-right col-lg-6 border-0 shadow">
-                    <div class="col-lg-11 profile-frame">
-                        <div class="col-lg-12">
-                            <p class="overview">Attendance History</p>
-                            <hr>
-                        </div>
-                        <div class = "container attendance">
-                            <div class ="row">
-                            <table id="example" class="content-table table-borderless" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th class='px-4 py-2 text-center'>Date</th>
-                                        <th class='px-4 py-2 text-center'>Time in</th>
-                                        <th class='px-4 py-2 text-center'>Time out</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+            </div>
+            <div class="col-lg border-0 shadow p-2 m-2">
+                <div class="col-lg-11">
+                    <div class="col-lg-12">
+                        <p class="overview">Attendance History</p>
+                        <hr>
+                    </div>
+                    <div class ="">
+                        <div class ="row">
+                        <table id="example" class="content-table table-borderless" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th class='px-4 py-2 text-center'>Date</th>
+                                    <th class='px-4 py-2 text-center'>Time in</th>
+                                    <th class='px-4 py-2 text-center'>Time out</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <?php
                                     if(!empty($_SESSION["typeID"])){
                                         $accID = $_SESSION["accountID"];
@@ -253,81 +315,79 @@ if(isset($_POST["ret"])){
                                         }     
                                     }
                                 ?>
-                                </tbody>
-                            </table>
-                            <a href='attendance-profile.php'>
-                                <input class="view-all format" type="submit" value="View all">
-                            </a>
-                        </div>
-                    </div>
+                            </tbody>
+                        </table>
+                        <a href='attendance-profile.php'>
+                            <input class="view-all format" type="submit" value="View all">
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+        </div>
+
+
         <?php
         if(empty($_SESSION["typeID"])){
-            echo "<div class='row profile'>
-                <div class='profile-container col-lg-12 pt-0'>
-                    <div class='profile-form profile-form-left col-lg-6 border-0 shadow'>
-                        <div class='col-lg-11 profile-frame'>
-                            <div class='col-lg-12'>
-                                <p class='overview'>Borrowed Books</p>
-                                <hr>
-                            </div>
-                            <div class = 'container borrowed-books'>
-                                <div class ='row'>
-                                <table id='example' class='content-table table-borderless' style='width:100%'>
-                                    <thead>
-                                        <tr>
-                                            <th class='px-4 py-2 text-center'>Date</th>
-                                            <th class='px-4 py-2 text-center'>Deadline</th>
-                                            <th class='px-4 py-2 text-center'>Title</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>";
-                                        if(empty($_SESSION["typeID"])){   
-                                            $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT borrow_date,deadline,bookID
-                                            FROM borrowed_book
-                                            WHERE patronID = '$accID'
-                                            ORDER BY borrow_date DESC
-                                            LIMIT 2;");
-
-                                            while($row = mysqli_fetch_assoc($result)){
-
-                                                $booknumber = $row["bookID"];
-                                                $result2 = mysqli_query($conn, "SELECT book_name
-                                                FROM book
-                                                WHERE bookID = '$booknumber';");
-
-                                                $row2 = mysqli_fetch_assoc($result2);
-
-                                                echo "<tr>
-                                                    <td class='px-4 py-2 text-center'>$row[borrow_date]</td>
-                                                    <td class='px-4 py-2 text-center'>$row[deadline]</td>
-                                                    <td class='px-4 py-2 text-center'>$row2[book_name]</td>
-                                                </tr>";
-                                            }     
-                                        }
-                                        echo"
-                                    </tbody>
-                                </table>
-                                <a href='borrowedbooks-profile.php'>
-                                    <input class='view-all format' type='submit' value='View all'>
-                                </a>
-                            </div>
-                        </div>
+        echo"<div class='row mx-md-3 my-md-2 me-1'>
+            <div class='col-lg border-0 shadow p-2 m-2'>
+                <div class='col-lg-11'>
+                    <div class='col-lg-12'>
+                        <p class='overview'>Borrowed Books</p>
+                        <hr>
                     </div>
-                </div>";
+                    <div class='row'>
+                    <table id='example' class='content-table table-borderless' style='width:100%'>
+                        <thead>
+                            <tr>
+                                <th class='px-4 py-2 text-center'>Date</th>
+                                <th class='px-4 py-2 text-center'>Deadline</th>
+                                <th class='px-4 py-2 text-center'>Title</th>
+                            </tr>
+                        </thead>
+                        <tbody>";
+                            if(empty($_SESSION["typeID"])){   
+                                $accID = $_SESSION["accountID"];
+                                $result = mysqli_query($conn, "SELECT borrow_date,deadline,bookID
+                                FROM borrowed_book
+                                WHERE patronID = '$accID'
+                                ORDER BY borrow_date DESC
+                                LIMIT 3;");
 
-                echo'
-                <div class="profile-form profile-form-right col-lg-6 border-0 shadow">
-                    <div class="col-lg-11 profile-frame">
-                        <div class="col-lg-12">
-                            <p class="overview">Penalty</p>
-                            <hr>
-                        </div>
-                        <div class = "container attendance">
+                                while($row = mysqli_fetch_assoc($result)){
+
+                                    $booknumber = $row["bookID"];
+                                    $result2 = mysqli_query($conn, "SELECT book_name
+                                    FROM book
+                                    WHERE bookID = '$booknumber';");
+
+                                    $row2 = mysqli_fetch_assoc($result2);
+
+                                    echo "<tr>
+                                        <td class='px-4 py-2 text-center'>$row[borrow_date]</td>
+                                        <td class='px-4 py-2 text-center'>$row[deadline]</td>
+                                        <td class='px-4 py-2 text-center'>$row2[book_name]</td>
+                                    </tr>";
+                                }     
+                            }
+                            echo"
+                        </tbody>
+                    </table>
+                    <a href='borrowedbooks-profile.php'>
+                        <input class='view-all format' type='submit' value='View all'>
+                    </a>                       
+                    </div>
+                </div>
+            </div>";
+
+            echo'
+            <div class="col-lg border-0 shadow p-2 m-2">
+                <div class="col-lg-11">
+                    <div class="col-lg-12">
+                        <p class="overview">Penalty</p>
+                        <hr>
+                    </div>
+                    <div class = "">
                             <div class ="row">
                             <table id="example" class="content-table table-borderless" style="width:100%">
                                 <thead>
@@ -369,14 +429,12 @@ if(isset($_POST["ret"])){
                         </div>
                     </div>
                 </div>
-
-
             </div>';
-                                    }?>
-                                
-        </div>
+            }?>
     </div>
-    </div>
+
+    
+
     <script>var qrText = document.getElementById('qr-name').innerHTML;
 
 
