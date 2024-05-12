@@ -80,39 +80,28 @@ if(isset($_POST["login"])){
                 </div>
 
                 <div class="row login-text d-flex justify-content-center">
-                    <div class="col-lg-3 d-flex justify-content-center">
+                    <div class="col-lg-4 d-flex justify-content-center">
                         <p class="login-sign">Login</p>
                     </div>
                 </div>
 
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-3 d-flex justify-content-center">
+                <div class="row d-flex justify-content-center mb-5">
+                    <div class="col-lg-5 d-flex justify-content-center">
                         <form action="" method="post" autocomplete="off">
                             <label class="input-text" for="username">Email</label><br>
                             <input class="input-username format" type="text" id="email" name="email" required><br>
 
                             <label class="input-text" for="pwd">Password</label><br>
                             <input class="input-password format" type="password" id="password" name="password" required>
-
-                            <input class="checkbox" type="checkbox" id="remember" name="remember" value="remember">
-                            <label class="remember format-remember" for="remember">Remember me</label>
-
-                            <a class="forgot-password format-forgot" href="#"  href="#">Forgot Password?</a>
+                            <div class="mb-5"></div>
 
                             <button class="login-button format" type="submit" value="Login" id="login" name="login">Login</button>
                         </form>
                     </div>
                 </div>
-
-                <div class="row d-flex justify-content-center mb-5">
-                    <div class="col-lg-6 d-flex justify-content-center">
-                        <a class="create-format" href="register.php">Create your account →</a>
-                    </div>
-                </div>
-
             </div>
         </div>
-            <div class="login-side col-lg-3 mt-5">
+            <div class="login-side col-lg-3 mt-5 mb-5">
             </div>
         </div>
     </div>
