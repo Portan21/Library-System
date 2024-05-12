@@ -75,6 +75,10 @@ if(isset($_POST["ret"])){
             <li class="nav-item">
             <a class="nav-link" href="catalogs.php">Catalog</a>
             </li>
+
+            <li class="nav-item">
+            <a class="nav-link" href="return.php">Return</a>
+            </li>
 	    <?php
 	    if(!empty($_SESSION["typeID"])){
 	    echo"

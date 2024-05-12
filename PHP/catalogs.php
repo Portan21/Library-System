@@ -48,6 +48,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <li class="nav-item">
             <a class="nav-link active" aria-current='page' href="catalogs.php">Catalog</a>
             </li>
+
+            <li class="nav-item">
+            <a class="nav-link" aria-current='page' href="return.php">Return</a>
+            </li>
 	    <?php
 	    if(!empty($_SESSION["typeID"])){
 	    echo"
