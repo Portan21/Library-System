@@ -101,7 +101,7 @@ font-family: sans-serif;
 }
 
 .content-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+    background-color: #e9f3ff;
 }
 
 .content-table tbody tr:last-of-type {

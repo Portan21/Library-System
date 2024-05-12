@@ -126,13 +126,11 @@ if(isset($_POST["ret"])){
                                     <?php
                                         if(!empty($_SESSION["typeID"])){
                                             $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT nameType
+                                            $result = mysqli_query($conn, "SELECT name
                                             FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
                                             WHERE librarianID = '$accID'");
                                             $row = mysqli_fetch_assoc($result);
                                             $name = $row['name'];
-                                            $email = $row['email'];
-                                            $type = $row['typeID'];
                                             echo"
                                             <td class='px-4 py-2 text-end overview-text'>$name</td>";
                                         }
@@ -156,13 +154,11 @@ if(isset($_POST["ret"])){
                                     <?php
                                         if(!empty($_SESSION["typeID"])){
                                             $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT nameType
+                                            $result = mysqli_query($conn, "SELECT email
                                             FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
                                             WHERE librarianID = '$accID'");
                                             $row = mysqli_fetch_assoc($result);
-                                            $name = $row['name'];
                                             $email = $row['email'];
-                                            $type = $row['typeID'];
                                             echo"
                                             <td class='px-4 py-2 text-end overview-text'>$email</td>";
                                         }
@@ -202,9 +198,7 @@ if(isset($_POST["ret"])){
                                             FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
                                             WHERE librarianID = '$accID'");
                                             $row = mysqli_fetch_assoc($result);
-                                            $name = $row['name'];
-                                            $email = $row['email'];
-                                            $type = $row['typeID'];
+                                            $type = $row['nameType'];
                                             echo"
                                             <td class='px-4 py-2 text-end overview-text'>$type</td>";
                                         }
