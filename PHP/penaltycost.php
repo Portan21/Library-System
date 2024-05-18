@@ -7,6 +7,28 @@ require 'config.php';
 if(empty($_SESSION["accountID"])){
   header("Location: login.php");
 }
+else{
+    $id = $_SESSION["accountID"];
+}
+
+if(isset($_POST["upd"])){
+    $cost = $_POST["cost"];
+
+    date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
+    $currentDateTime = date('Y-m-d H:i:s');
+    
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["upd"])) {
+        $cost = mysqli_real_escape_string($conn, $_POST["cost"]);
+    
+        $insertquery = "INSERT INTO penalty_cost (cost, date, librarianID) VALUES ('$cost', NOW(), '$id')";
+    
+        if (mysqli_query($conn, $insertquery)) {
+            echo "<script>alert('Penalty cost updated successfully!');</script>";
+        } else {
+            echo "<script>alert('Error updating penalty cost: " . mysqli_error($conn) . "');</script>";
+        }
+    }
+}
 
 ?>
 <head>
@@ -123,33 +145,89 @@ if(empty($_SESSION["accountID"])){
     <section class="content">
         
     <div class="container pt-5">
+
         <div class="row pt-3"></div>
 
         <div class="row mb-2">
             <div class="col">
+                <h1 class="mt-2 mb-3 text-uppercase">Penalty cost</h1>
             </div>
         </div>
+
             <form action="" method="post" autocomplete="off">
-                <div class="row">
-                <div class="col-md-5 mb-3 left-section">
-                    <h1 class="mt-2 text-uppercase">Penalty cost</h1>
-                    <div class="col-md-5">
-                        <label for="title">Update Penalty Cost Per Day (₱)</label>
-                        <div class="input-group">
-                            <span class="input-group-text">₱</span>
-                            <input type="number" class="form-control mb-2 mt-1" value="" name="cost" placeholder="00.00" required>
-                        </div>
-                        <div class="mt-2">
-                            <button type="submit" name="submit" id="submit" class="btn btn-success btn-large"><b>UPDATE</b></button>
-                        </div>
+        <div class="row">
+            <div class="col-md-5 mb-3 pb-3 left-section">
+                <h3 class="text-uppercase text-center">Current Penalty Cost Per Day</h3>
+                <?php 
+                    $currentcost = "SELECT cost 
+                    FROM penalty_cost 
+                    ORDER BY date DESC 
+                    LIMIT 1";
+
+                    $costresult = mysqli_query($conn, $currentcost);
+
+                    if ($costresult && mysqli_num_rows($costresult) > 0) {
+                        $currow = mysqli_fetch_assoc($costresult);
+                        $latestCost = $currow['cost'];
+                    }
+
+                    echo"<h2 class='text-center text-bold'>₱$latestCost</h2>";
+                ?>
+
+                <div class="col-md-5 pt-3">
+                    <label for="title">Update Penalty Cost Per Day (₱)</label>
+                    <div class="input-group">
+                        <span class="input-group-text">₱</span>
+                        <input type="number" class="form-control mb-2 mt-1" value="" name="cost" placeholder="00.00" required>
+                    </div>
+                    <div class="mt-2">
+                        <button type='submit' class='btn btn-success py-2' onclick='return confirmReturn()' id='upd' name='upd'><b>UPDATE</b></button>
                     </div>
                 </div>
+            </div>
             </form>
 
                 <div class="col-md-7 mb-5 right-section">
-                        <h1 class="mt-2 text-uppercase">Cost History</h1>
+                    <h3 class="text-uppercase text-center">Cost History</h3>
+                    <div class="row">
+                        <div>
+                            <?php
+                            $result = mysqli_query($conn, "SELECT name, cost, date FROM penalty_cost pc
+                            JOIN lib_acc la ON pc.librarianID = la.librarianID
+                            ORDER BY date DESC
+                            LIMIT 20;");
+
+                            if (mysqli_num_rows($result) > 0) {
+                                // Display the table if there are borrow records
+                                echo '<table class="table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>Update Date</th>
+                                                <th>Patron Name</th>
+                                                <th>Cost</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>';
+
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo '<tr>
+                                            <td>' . $row['date'] . '</td>
+                                            <td>' . $row['name'] . '</td>
+                                            <td>' . $row['cost'] . '</td>
+                                        </tr>';
+                                }
+
+                                echo '</tbody></table>';
+                            } else {
+                                // Display a message if there are no borrow records
+                                echo '<p>No records available.</p>';
+                            }
+                            ?>
+                        </div>
                     </div>
                 </div>
+        </div>
+
     </div>
 
 
@@ -168,6 +246,11 @@ if(empty($_SESSION["accountID"])){
 
 <!-- jQuery -->
 
+<script>
+    function confirmReturn() {
+        return confirm('Press "OK" to confirm penalty cost update. Press "Cancel" otherwise.');
+    }
+    </script>
 <script src = "https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
