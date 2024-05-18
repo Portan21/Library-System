@@ -21,11 +21,33 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
 $currentDate = new DateTime();
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["submit"])) {
+        // Get the values from the form
+        $descriptionValue = mysqli_real_escape_string($conn, $_POST["description"]);
+        $titlevalue = mysqli_real_escape_string($conn, $_POST["title"]);
+        $authorvalue = mysqli_real_escape_string($conn, $_POST["author"]);
+        $genresvalue = mysqli_real_escape_string($conn, $_POST["genres"]);
+        $ratingvalue = mysqli_real_escape_string($conn, $_POST["rating"]);
+
+        $insertquery = "INSERT INTO book (book_name, author, genres, rating, availability, description) VALUES 
+        ('$titlevalue', '$authorvalue', '$genresvalue', '$ratingvalue', '1', '$descriptionValue')";
+
+            
+        if (mysqli_query($conn, $insertquery)) {
+            echo "<script> alert('Book Issuing Successful'); </script>";
+        } else {
+            echo "<script> alert('Book Issuing Not Successful'); </script>";
+        }
+
+    }
+}
 ?>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>Issue Book</title>
   <link rel="stylesheet" href="../CSS/index.css">
   <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
   <link rel = "stylesheet" href = "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"> 
@@ -349,91 +371,52 @@ $currentDate = new DateTime();
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-        <div class = "container py-4 px-4">
-    <div class ="row">
-    <h3 class="mb-4 mt-3 text-uppercase">Profile</h3>
-    <div class="container-fluid">
-        <div class="row mx-md-3 my-md-2 me-1">
-            <div class="col-lg">
-                
+        
+        <div class="container">
+            <div class="row pt-3"></div>
+
+            <div class="row mt-4 mb-2">
+                <div class="col mt-3">
+                    <a href="newcatalog.php" class="mt-2 text-decoration-none text-uppercase">< VIEW Catalog list</a>
+                    
+                    <h1 class="mt-1 text-uppercase">ISSUE BOOK</h1>
+                </div>
             </div>
-            <div class="col-lg-10 border-0 shadow p-2 m-2">
-                <div class="col-lg-12">
+                <form action="" method="post" autocomplete="off">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-md-8 mb-3">
+                            <label for="title">Title</label>
+                            <input type="text" class="form-control mb-2 mt-1" value="" name="title" placeholder="Title" required>
+
+                            <label for="author">Author</label>
+                            <input type="text" class="form-control mb-2 mt-1" value="" name="author" placeholder="Author" required>
+
+                            <label for="description">Description</label>
+                            <textarea class="form-control mb-2 mt-1" name="description" placeholder="Description" rows="10" cols="50" required></textarea>
+
+                        </div>
+
+                        <div class="col-md-4 mb-5">
+                            
+                            <a>GENRES</a>
+                            <textarea type="text" class="form-control mb-3 mt-1" name="genres" placeholder="['Genre1', 'Genre2']" rows="5" cols="50" required></textarea>
+
+                            <a>RATINGS</a>
                             <div class="row">
-                                <div class="col-6">
-                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Name</p>
-                                 </div>
-                                 <div class="col-6">
-                                    <?php
-                                        if(!empty($_SESSION["typeID"])){
-                                            $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT name
-                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
-                                            WHERE librarianID = '$accID'");
-                                            $row = mysqli_fetch_assoc($result);
-                                            $name = $row['name'];
-                                            echo"
-                                                <p class='px-4 py-2 text-end overview-text text-break'>$name</p>";
-                                        }
-                                    ?>
-                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Email</p>
-                                 </div>
-                                <div class="col-6">
-                                    <?php
-                                        if(!empty($_SESSION["typeID"])){
-                                            $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT email
-                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
-                                            WHERE librarianID = '$accID'");
-                                            $row = mysqli_fetch_assoc($result);
-                                            $email = $row['email'];
-                                            echo"
-                                                <p class='px-4 py-2 text-end overview-text text-break'>$email</p>";
-                                        }
-                                    ?>
+                                <div class="col-md-6 mt-1">
+                                    <input type="number" class="form-control mb-3" value="" name="rating" placeholder="0.00" step="0.01" min="0" max="5" required>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Account Type</p>
-                                 </div>
-                                <div class="col-6">
-                                    <?php
-                                        if(!empty($_SESSION["typeID"])){
-                                            $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT nameType
-                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
-                                            WHERE librarianID = '$accID'");
-                                            $row = mysqli_fetch_assoc($result);
-                                            $type = $row['nameType'];
-                                            echo"
-                                                <p class='px-4 py-2 text-end overview-text text-break'>$type</p>";
-                                        }
-                                    ?>
-                                 </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <a href="accountedit.php"><input class="edit-button btn btn-secondary pt-1 pb-1 pl-1 pr-1" type="submit" value="Change Password"></a>
-                            </div>
+
+                            <button type="submit" name="submit" id="submit" class="btn btn-success btn-lg mt-2"><b>ISSUE BOOK</b></button>
                         </div>
                     </div>
-                </div>  
-            </div>
-            <div class="col-lg">
-                
-            </div>
-        </div>
-    </div>
+                </form>
 
+        </div>
+
+
+    </section>
         
 
 
