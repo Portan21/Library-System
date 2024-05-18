@@ -467,13 +467,24 @@ $currentDate = new DateTime();
                         }
                     }
                     else if($row['status'] == 1){
+                      if($row['librarianID'] == 4){
                         echo "<tr>
-                            <td class='px-4 py-2 text-center'>$row[librarianID]</td>
-                            <td class='px-4 py-2 text-center'>$row[name]</td>
-                            <td class='px-4 py-2 text-center'>$row[email]</td>
-                            <td class='px-4 py-2 text-center'><button id='typeButton$row[librarianID]' onmouseover='typehover($row[librarianID])' onmouseout='typehoverOut($row[librarianID])' onclick='changetype($row[librarianID])' class='select btn btn-warning'>$row[nametype]</td>
-                            <td class='px-4 py-2 text-center'><button id='statusButton$row[librarianID]' onmouseover='hover($row[librarianID])' onmouseout='hoverOut($row[librarianID])' onclick='changeStatus($row[librarianID])' class='select btn btn-success'>Enabled</button></td>
-                        </tr>";
+                              <td class='px-4 py-2 text-center'>$row[librarianID]</td>
+                              <td class='px-4 py-2 text-center'>$row[name]</td>
+                              <td class='px-4 py-2 text-center'>$row[email]</td>
+                              <td class='px-4 py-2 text-center'>$row[nametype]</td>
+                              <td class='px-4 py-2 text-center'><button id='statusButton$row[librarianID]' class='select btn btn-success'>Enabled</button></td>
+                          </tr>";
+                      }
+                        else{
+                          echo "<tr>
+                              <td class='px-4 py-2 text-center'>$row[librarianID]</td>
+                              <td class='px-4 py-2 text-center'>$row[name]</td>
+                              <td class='px-4 py-2 text-center'>$row[email]</td>
+                              <td class='px-4 py-2 text-center'><button id='typeButton$row[librarianID]' onmouseover='typehover($row[librarianID])' onmouseout='typehoverOut($row[librarianID])' onclick='changetype($row[librarianID])' class='select btn btn-warning'>$row[nametype]</td>
+                              <td class='px-4 py-2 text-center'><button id='statusButton$row[librarianID]' onmouseover='hover($row[librarianID])' onmouseout='hoverOut($row[librarianID])' onclick='changeStatus($row[librarianID])' class='select btn btn-success'>Enabled</button></td>
+                          </tr>";
+                        }
                     }
                     else{
                         echo "<tr>
