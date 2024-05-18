@@ -65,7 +65,7 @@ $currentDate = new DateTime();
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
+        <a href="adminprofile.php" class="nav-link">Profile</a>
       </li>
     </ul>
 
@@ -101,8 +101,8 @@ $currentDate = new DateTime();
                 $row = mysqli_fetch_assoc($result);
                 $name = $row['name'];
                 $nametype = $row['nametype'];
-                echo" <a href='profile.php' class='d-block font-weight-bold text-wrap'>$name</a>";
-                echo" <a href='profile.php' class='d-block font-weight-light'>$nametype</a>";
+                echo" <a href='adminprofile.php' class='d-block font-weight-bold text-wrap'>$name</a>";
+                echo" <a href='adminprofile.php' class='d-block font-weight-light'>$nametype</a>";
             }
           ?>
           </div>
@@ -301,19 +301,25 @@ $currentDate = new DateTime();
                   <li class="nav-item">
                     <a href="#" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Add a book</p>
+                      <p>Catalog</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Edit a book</p>
+                      <p>Add Book</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="./librarianprofiles-admin.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Borrow Requests</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Return Requests</p>
                     </a>
                   </li>
                 </ul>

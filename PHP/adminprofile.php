@@ -120,8 +120,8 @@ $currentDate = new DateTime();
         </div>
       </div>
 
-     <!-- Sidebar Menu -->
-     <nav class="mt-2">
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
         <?php
@@ -347,40 +347,86 @@ $currentDate = new DateTime();
         <div class="row">
         <div class = "container py-4 px-4">
     <div class ="row">
-    <h3 class="mb-4 mt-3 text-uppercase">Returned Books with Penalty</h3>
-    <table id="example" class="content-table" style="width:100%">
-    <thead>
-        <tr>    
-            <th class='px-4 py-2 text-center'>Name</th>
-            <th class='px-4 py-2 text-center'>Book Name</th>
-            <th class='px-4 py-2 text-center'>Librarian Name</th>
-            <th class='px-4 py-2 text-center'>Return Date</th>
-            <th class='px-4 py-2 text-center'>Penalty Paid</th>
-        </tr>
-        </thead>
-        <tbody>
-            <?php  
-                $result = mysqli_query($conn, "SELECT pt_name, book_name, name, return_date, penalty_paid
-                FROM patron_acc p
-                INNER JOIN returned_book rb ON p.patronID = rb.patronID
-                INNER JOIN lib_acc la ON rb.librarianID = la.librarianID
-                INNER JOIN book b ON rb.bookID = b.bookID
-                WHERE penalty_paid > 0;");
-                while($row = mysqli_fetch_assoc($result)){
-                    echo "<tr>
-                        <td class='px-4 py-2 text-center'>$row[pt_name]</td>
-                        <td class='px-4 py-2 text-center'>$row[book_name]</td>
-                        <td class='px-4 py-2 text-center'>$row[name]</td>
-                        <td class='px-4 py-2 text-center'>$row[return_date]</td>
-                        <td class='px-4 py-2 text-center'>$row[penalty_paid]</td>
-                    </tr>";
-                }     
-            ?>
-        </tbody>
-      </table>
+    <h3 class="mb-4 mt-3 text-uppercase">Profile</h3>
+    <div class="container-fluid">
+        <div class="row mx-md-3 my-md-2 me-1">
+            <div class="col-lg">
+                
+            </div>
+            <div class="col-lg-10 border-0 shadow p-2 m-2">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Name</p>
+                                 </div>
+                                 <div class="col-6">
+                                    <?php
+                                        if(!empty($_SESSION["typeID"])){
+                                            $accID = $_SESSION["accountID"];
+                                            $result = mysqli_query($conn, "SELECT name
+                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
+                                            WHERE librarianID = '$accID'");
+                                            $row = mysqli_fetch_assoc($result);
+                                            $name = $row['name'];
+                                            echo"
+                                                <p class='px-4 py-2 text-end overview-text text-break'>$name</p>";
+                                        }
+                                    ?>
+                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Email</p>
+                                 </div>
+                                <div class="col-6">
+                                    <?php
+                                        if(!empty($_SESSION["typeID"])){
+                                            $accID = $_SESSION["accountID"];
+                                            $result = mysqli_query($conn, "SELECT email
+                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
+                                            WHERE librarianID = '$accID'");
+                                            $row = mysqli_fetch_assoc($result);
+                                            $email = $row['email'];
+                                            echo"
+                                                <p class='px-4 py-2 text-end overview-text text-break'>$email</p>";
+                                        }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Account Type</p>
+                                 </div>
+                                <div class="col-6">
+                                    <?php
+                                        if(!empty($_SESSION["typeID"])){
+                                            $accID = $_SESSION["accountID"];
+                                            $result = mysqli_query($conn, "SELECT nameType
+                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
+                                            WHERE librarianID = '$accID'");
+                                            $row = mysqli_fetch_assoc($result);
+                                            $type = $row['nameType'];
+                                            echo"
+                                                <p class='px-4 py-2 text-end overview-text text-break'>$type</p>";
+                                        }
+                                    ?>
+                                 </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <a href="accountedit.php"><input class="edit-button btn btn-secondary pt-1 pb-1 pl-1 pr-1" type="submit" value="Change Password"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="col-lg">
+                
+            </div>
+        </div>
     </div>
 
-        
         
 
 
@@ -400,7 +446,9 @@ $currentDate = new DateTime();
     <script src = "../JavaScript/accountStatus - librarian.js"></script>
     <script src = "../JavaScript/changetype.js"></script>
     <script src = "../JavaScript/app2.js"></script>
-    <script src="dist/js/adminlte.js"></script>
+    <!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+
 
 </body>
 </html>

@@ -292,19 +292,25 @@ $currentDate = new DateTime();
                   <li class="nav-item">
                     <a href="#" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Add a book</p>
+                      <p>Catalog</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Edit a book</p>
+                      <p>Add Book</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="./librarianprofiles-admin.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Borrow Requests</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Return Requests</p>
                     </a>
                   </li>
                 </ul>

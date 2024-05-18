@@ -65,7 +65,7 @@ $currentDate = new DateTime();
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
+        <a href="adminprofile.php" class="nav-link">Profile</a>
       </li>
     </ul>
 
@@ -91,12 +91,21 @@ $currentDate = new DateTime();
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="dist/img/adminIcon.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
         <div class="info">
-          <a href="#" class="d-block">Admin</a>
-        </div>
+          <?php
+            if(!empty($_SESSION["typeID"])){
+                $id = $_SESSION["accountID"];
+                $result = mysqli_query($conn, "SELECT name, nametype FROM lib_acc 
+                INNER JOIN account_type ON typeId = type_ID
+                WHERE librarianID = '$id'");
+                $row = mysqli_fetch_assoc($result);
+                $name = $row['name'];
+                $nametype = $row['nametype'];
+                echo" <a href='adminprofile.php' class='d-block font-weight-bold text-wrap'>$name</a>";
+                echo" <a href='adminprofile.php' class='d-block font-weight-light'>$nametype</a>";
+            }
+          ?>
+          </div>
       </div>
 
       <!-- SidebarSearch Form -->
@@ -292,19 +301,25 @@ $currentDate = new DateTime();
                   <li class="nav-item">
                     <a href="#" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Add a book</p>
+                      <p>Catalog</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Edit a book</p>
+                      <p>Add Book</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="./librarianprofiles-admin.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Borrow Requests</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Return Requests</p>
                     </a>
                   </li>
                 </ul>
