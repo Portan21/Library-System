@@ -44,7 +44,7 @@ if(isset($_GET["appreq"]) && isset($_GET["appbook"])){
     
 }
 
-header("location: request.php");
+header("location: newrequest.php");
 exit;
 
 //echo "<script> alert('Time Right Now: $currentDateTime AND Deadline: $futureDateTime'); </script>";

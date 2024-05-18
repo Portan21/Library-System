@@ -161,7 +161,7 @@ if(isset($_POST["upd"])){
                 <?php 
                     $currentcost = "SELECT cost 
                     FROM penalty_cost 
-                    ORDER BY date DESC 
+                    ORDER BY penaltyID DESC
                     LIMIT 1";
 
                     $costresult = mysqli_query($conn, $currentcost);
@@ -178,7 +178,7 @@ if(isset($_POST["upd"])){
                     <label for="title">Update Penalty Cost Per Day (₱)</label>
                     <div class="input-group">
                         <span class="input-group-text">₱</span>
-                        <input type="number" class="form-control mb-2 mt-1" value="" name="cost" placeholder="00.00" required>
+                        <input type="number" class="form-control mb-2 mt-1" value="" name="cost" placeholder="00.00" min="0" step="0.01" required>
                     </div>
                     <div class="mt-2">
                         <button type='submit' class='btn btn-success py-2' onclick='return confirmReturn()' id='upd' name='upd'><b>UPDATE</b></button>
@@ -194,7 +194,7 @@ if(isset($_POST["upd"])){
                             <?php
                             $result = mysqli_query($conn, "SELECT name, cost, date FROM penalty_cost pc
                             JOIN lib_acc la ON pc.librarianID = la.librarianID
-                            ORDER BY date DESC
+                            ORDER BY penaltyID DESC
                             LIMIT 20;");
 
                             if (mysqli_num_rows($result) > 0) {

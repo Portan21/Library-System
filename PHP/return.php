@@ -20,28 +20,13 @@ $currentDate = new DateTime();
 if(isset($_POST["ret"])){
     $borrowID = $_POST["borrowID"];
 
-    $insquery = "INSERT INTO returned_book (bookID, patronID, librarianID, borrow_date, return_date, penalty_paid)
-    SELECT bookID, patronID, $id, borrow_date, '$currentDateTime', 0
-    FROM borrowed_book
-    WHERE borrowID = $borrowID";
+    $insquery = "INSERT INTO return_form (borrowID) VALUES ($borrowID)";
 
     if(mysqli_query($conn, $insquery)){
-        // Insert was successful, now update the book availability
-        $updatequery = "UPDATE book SET availability = '1' WHERE bookID IN (SELECT bookID FROM borrowed_book WHERE borrowID = $borrowID)";
-        
-        if (mysqli_query($conn, $updatequery)) {
-            // The update was successful, now proceed with the delete query
-            $delquery = "DELETE FROM borrowed_book WHERE borrowID = $borrowID";
-            
-            if(mysqli_query($conn, $delquery)){
-            }
-            else{
-                echo "<script>alert('Deleting error');</script>";
-            }
-        } else {
-            echo "<script>alert('Update error');</script>";
-        }
-
+        echo "<script>alert('Return Form Submitted.');</script>";
+    }
+    else{
+        echo "<script>alert('Return Form Submission Unsuccessful.');</script>";
     }
 }
 
@@ -123,6 +108,9 @@ if(isset($_POST["retpen"])){
                 $totpen = $totday * 10;
 
                 if($row['deadline'] >= $currentDateTime){
+                    $borrowID = $row['borrowID'];
+                    $returnresult = mysqli_query($conn, "SELECT * FROM return_form WHERE borrowID = $borrowID");
+                    $returnrow = mysqli_fetch_assoc($returnresult);
                 echo 
                 "<tr>
                     <td class='px-4 py-2'>
@@ -141,8 +129,16 @@ if(isset($_POST["retpen"])){
                                 <div class='col-3 d-flex justify-content-end align-items-center'>
                                     <div>
                                         <form action='' method='post' autocomplete='off'>
-                                            <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>
-                                            <button type='submit' class='btn btn-primary py-2' onclick='return confirmReturn()' id='ret' name='ret'>RETURN</button>
+                                            <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>";
+
+                                            if(mysqli_num_rows($returnresult) > 0){
+                                                echo"<button type='submit' class='btn btn-primary py-2' onclick='return confirmReturn()' id='ret' name='ret' disabled>RETURN</button>";
+                                            }
+                                            else{
+                                                echo"<button type='submit' class='btn btn-primary py-2' onclick='return confirmReturn()' id='ret' name='ret''>RETURN</button>";
+                                            }
+
+                                            echo"
                                         </form>
                                     </div>
                                 </div>
