@@ -299,7 +299,7 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="NewCatalog.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Catalog</p>
                     </a>
@@ -323,6 +323,13 @@ $currentDate = new DateTime();
                     </a>
                   </li>
                 </ul>
+              </li>
+              <li class="nav-item">
+                <a href="QRcodeReader.php" class="nav-link">
+                  <p>
+                    QR Reader (Patron Attendance)
+                  </p>
+                </a>
               </li>';}
             }
           ?>

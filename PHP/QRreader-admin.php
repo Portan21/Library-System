@@ -56,6 +56,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+  <link rel="stylesheet" href="../CSS/qrcodereader.css">
+  <script defer src="../JavaScript/html5-qrcode-min.js"></script>
+  <script defer src="../JavaScript/qrcodeReader.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -330,7 +333,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="QRcodeReader.php" class="nav-link">
+                <a href="QRreader-admin.php" class="nav-link">
                   <p>
                     QR Reader (Patron Attendance)
                   </p>
@@ -339,7 +342,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
           ?>
           
-        </ul>
+         
        
       </nav>
       <!-- /.sidebar-menu -->
@@ -353,43 +356,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-        <div class = "container py-4 px-4">
-        <table id="example" class="content-table" tyle="width:100%">
-        <thead>
-          <tr>
-            <th>Book Title</th>
-            <th>Author</th>
-            <th>Availability</th>
-          </tr>
-        </thead>
-        <tbody>
-		<?php
-        $result = mysqli_query($conn, "SELECT bookID, book_name,author,availabilitytype,description FROM book b
-        INNER JOIN availability_type a ON b.availability = a.availabilityID 
-        ORDER BY bookID ASC");
-        while($row = mysqli_fetch_assoc($result)){
-          $bookName = htmlspecialchars($row['book_name']);
-          $description = htmlspecialchars($row['description']);
-          echo "<tr>
-              <td class='px-4 py-2 text-center border'>
-                <form id='bookForm' method='post' action='' style='display: inline;'>
-                <input type='hidden' name='bookTitle' value='$row[bookID]'>
-                <button type='submit' class='book-button' style='border: none; background-color: transparent; cursor: pointer; text-decoration: underline; color: blue; id='bookButton''>$row[book_name]</button>
-                </form>
-              </td>
-              <td class='px-4 py-2 text-center border'>$row[author]</td>
-              <td class='px-4 py-2 text-center border'>$row[availabilitytype]</td>
-          </tr>";
-          
-         }
-         ?>
-        </tbody>
-      </table>
+        <div class="container-fluid">
+            <div class="row reader">
+                <div class="reader-side col-lg-3">
+                </div>
+                <div class="reader-form col-lg-6 rounded-5 border-0 shadow">
+                    <div class="col-lg-8 reader-frame">
+                        <div id="reader" width="600px"></div>
+                        <div id="scannedName"><b>Name: 
+                        </div>
+                    </div>
+                </div>
+                <div class="reader-side col-lg-3">
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
 
   <!-- Control Sidebar -->
