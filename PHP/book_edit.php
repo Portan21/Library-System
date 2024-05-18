@@ -32,35 +32,39 @@ if(empty($_SESSION["accountID"])){
           $availabilityvalue = mysqli_real_escape_string($conn, $_POST["availability"]);
   
           // Update the information in the database
-          $updatequery = "UPDATE book SET 
-              book_name = '$titlevalue',
-              author = '$authorvalue',
-              genres = '$genresvalue',
-              rating = '$ratingvalue',
-              availability = '$availabilityvalue',
-              description = '$descriptionValue'
-              WHERE bookID = '$bookIdentity'";
-  
-              
-          if (mysqli_query($conn, $updatequery)) {
-              
-              date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
-              $currentDateTime = date('Y-m-d H:i:s');
-  
-              $insertquery = "INSERT INTO edited_by (bookID, librarianID, edit_time) VALUES ('$bookIdentity', '$id', '$currentDateTime')";
-                  
-              if (mysqli_query($conn, $insertquery)) {
-                  echo "<script> alert('Book Editing Successful'); </script>";
-              } else {
-                  echo "<script> alert('Book Editing Not Successful'); </script>";
-              }
-          } else {
-              // Handle the case where the update fails
-              echo "Error updating record: " . mysqli_error($conn);
-          }
-  
+            $updatequery = "UPDATE book SET 
+            book_name = '$titlevalue',
+            author = '$authorvalue',
+            genres = '$genresvalue',
+            rating = '$ratingvalue',
+            availability = '$availabilityvalue',
+            description = '$descriptionValue'
+            WHERE bookID = '$bookIdentity'";
+
+            if (mysqli_query($conn, $updatequery)) {
+
+            date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
+            $currentDateTime = date('Y-m-d H:i:s');
+
+            $insertquery = "INSERT INTO edited_by (bookID, librarianID, edit_time) VALUES ('$bookIdentity', '$id', '$currentDateTime')";
+
+            if (mysqli_query($conn, $insertquery)) {
+                // Set a success message
+                $_SESSION["editSuccessMessage"] = "Edit Successful";
+                
+                // Redirect to the same page to reflect the changes
+                header("Location: ".$_SERVER['PHP_SELF']);
+                exit();
+            } else {
+                echo "<script> alert('Book Editing Not Successful'); </script>";
+            }
+            } else {
+            // Handle the case where the update fails
+            echo "Error updating record: " . mysqli_error($conn);
+            }
       }
   }
+
 ?>
 <head>
   <meta charset="utf-8">
@@ -70,6 +74,9 @@ if(empty($_SESSION["accountID"])){
         .table-borderless td,
         .table-borderless th {
             border: 0;
+        }
+        .alert {
+        transition: opacity 1s ease-out;
         }
     </style>
   <link rel="stylesheet" href="../CSS/index.css">
@@ -195,11 +202,11 @@ if(empty($_SESSION["accountID"])){
                 <div class="row">
                     <div class="col-md-8 mb-3">
                         <?php
-                        $escapedTitle = mysqli_real_escape_string($conn, $title);
-                        $result = mysqli_query($conn, "SELECT bookID, genres, book_name, author, description, rating, availability FROM book WHERE book_name = '$escapedTitle'");
+                        $result = mysqli_query($conn, "SELECT bookID, genres, book_name, author, description, rating, availability FROM book WHERE bookID = '$title'");
                 
                         while($row = mysqli_fetch_assoc($result)){
                             $bookID = $row['bookID'];
+                            $bookname = $row['book_name'];
                             $author = $row['author'];
                             $genres = $row['genres'];
                             $rating = $row['rating'];
@@ -208,7 +215,7 @@ if(empty($_SESSION["accountID"])){
                         }
                         ?>
                         <label for="title">Title</label>
-                        <input type="text" class="form-control mb-2 mt-1" value="<?php echo $title ?>" name="title" placeholder="Title" required>
+                        <input type="text" class="form-control mb-2 mt-1" value="<?php echo $bookname ?>" name="title" placeholder="Title" required>
 
                         <label for="author">Author</label>
                         <input type="text" class="form-control mb-2 mt-1" value="<?php echo $author ?>" name="author" placeholder="Author" required>
@@ -269,7 +276,6 @@ if(empty($_SESSION["accountID"])){
                         
                         <?php
                             
-                        $escapedTitle = mysqli_real_escape_string($conn, $title);
                         $result = mysqli_query($conn, "SELECT name, edit_time FROM edited_by
                         JOIN lib_acc ON edited_by.librarianID = lib_acc.librarianID
                         WHERE edited_by.bookID = $bookID
@@ -288,7 +294,31 @@ if(empty($_SESSION["accountID"])){
                         ?>
 
                         <input type="hidden" id="bookID" name="bookID" value="<?php echo $bookID ?>">
-                        <button type="submit" name="submit" id="submit" class="btn btn-danger btn-lg "><b>EDIT BOOK DETAILS</b></button>
+                        
+                        <?php
+                        // Check if the success message exists in the session
+                        if (isset($_SESSION["editSuccessMessage"])) {
+                            // Display the success message
+                            echo '<div id="editSuccessMessage" class="alert alert-success" role="alert">' . $_SESSION["editSuccessMessage"] . '</div>';
+
+                            // Unset the session variable to ensure it is displayed only once
+                            unset($_SESSION["editSuccessMessage"]);
+                        }
+                        ?>
+                        <script>
+                        // Fade out the success message after 1 second
+                        setTimeout(function() {
+                            var element = document.getElementById("editSuccessMessage");
+                            if (element) {
+                                element.style.opacity = 0;
+                                setTimeout(function() {
+                                    element.style.display = "none";
+                                }, 1000); // 1 second transition duration
+                            }
+                        }, 1000); // 1000 milliseconds = 1 second
+                        </script>
+
+                        <button type="submit" name="submit" id="submit" class="btn btn-primary btn-lg "><b>EDIT BOOK DETAILS</b></button>
                     </div>
                 </div>
             </form>
@@ -296,47 +326,6 @@ if(empty($_SESSION["accountID"])){
     </div>
     
     <div class="container pb-5">
-        <div class="row mt-5">
-            <h1 class="mt-2 text-decoration-none text-uppercase">Borrow History</h1>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <?php
-                $result = mysqli_query($conn, "SELECT patron_acc.pt_name, borrow_date, return_date
-                    FROM returned_book
-                    JOIN patron_acc ON returned_book.patronID = patron_acc.patronID
-                    WHERE returned_book.bookID = $bookID
-                    ORDER BY returned_book.return_date DESC
-                    LIMIT 20;");
-
-                if (mysqli_num_rows($result) > 0) {
-                    // Display the table if there are borrow records
-                    echo '<table class="table table-borderless">
-                            <thead>
-                                <tr>
-                                    <th>Patron Name</th>
-                                    <th>Borrow Date</th>
-                                    <th>Return Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>';
-
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo '<tr>
-                                <td>' . $row['pt_name'] . '</td>
-                                <td>' . $row['borrow_date'] . '</td>
-                                <td>' . $row['return_date'] . '</td>
-                            </tr>';
-                    }
-
-                    echo '</tbody></table>';
-                } else {
-                    // Display a message if there are no borrow records
-                    echo '<p>No borrow records available.</p>';
-                }
-                ?>
-            </div>
-        </div>
     </div>
 
     </section>

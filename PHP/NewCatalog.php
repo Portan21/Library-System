@@ -143,13 +143,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <tr>
             <th>Book Title</th>
             <th>Author</th>
-            <th>Rating</th>
             <th>Availability</th>
           </tr>
         </thead>
         <tbody>
 		<?php
-        $result = mysqli_query($conn, "SELECT book_name,author,rating,availabilitytype,description FROM book b
+        $result = mysqli_query($conn, "SELECT bookID, book_name,author,availabilitytype,description FROM book b
         INNER JOIN availability_type a ON b.availability = a.availabilityID 
         ORDER BY bookID ASC");
         while($row = mysqli_fetch_assoc($result)){
@@ -158,12 +157,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           echo "<tr>
               <td class='px-4 py-2 text-center border'>
                 <form id='bookForm' method='post' action='' style='display: inline;'>
-                <input type='hidden' name='bookTitle' value='$row[book_name]'>
+                <input type='hidden' name='bookTitle' value='$row[bookID]'>
                 <button type='submit' class='book-button' style='border: none; background-color: transparent; cursor: pointer; text-decoration: underline; color: blue; id='bookButton''>$row[book_name]</button>
                 </form>
               </td>
               <td class='px-4 py-2 text-center border'>$row[author]</td>
-              <td class='px-4 py-2 text-center border'>$row[rating]</td>
               <td class='px-4 py-2 text-center border'>$row[availabilitytype]</td>
           </tr>";
           
