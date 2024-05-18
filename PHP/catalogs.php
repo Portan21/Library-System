@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </nav>
     <div class = "container py-5">
     <div class ="row">
-    <table id="example" class="content-table" tyle="width:100%">
+    <table id="example" class="content-table" style="width:100%">
         <thead>
           <tr>
             <th>Book Title</th>

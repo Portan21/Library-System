@@ -44,6 +44,21 @@ if(isset($_POST["ret"])){
 
     }
 }
+
+if(isset($_POST["retpen"])){
+    $borrowID = $_POST["borrowID"];
+    $receipt_num = $_POST["receiptNumber"];
+
+    $insquery = "INSERT INTO return_form (borrowID, receipt_number) VALUES ($borrowID, $receipt_num)";
+
+    if(mysqli_query($conn, $insquery)){
+        echo "<script>alert('Return Form Submitted.');</script>";
+    }
+    else{
+        echo "<script>alert('Return Form Submission Unsuccessful.');</script>";
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -127,7 +142,7 @@ if(isset($_POST["ret"])){
                                     <div>
                                         <form action='' method='post' autocomplete='off'>
                                             <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>
-                                            <button type='submit' class='btn btn-primary' onclick='return confirmReturn()' id='ret' name='ret'>RETURN</button>
+                                            <button type='submit' class='btn btn-primary py-2' onclick='return confirmReturn()' id='ret' name='ret'>RETURN</button>
                                         </form>
                                     </div>
                                 </div>
@@ -139,6 +154,10 @@ if(isset($_POST["ret"])){
                 </tr>";
                 }
                 else{
+                    $borrowID = $row['borrowID'];
+                    $returnresult = mysqli_query($conn, "SELECT * FROM return_form WHERE borrowID = $borrowID");
+                    $returnrow = mysqli_fetch_assoc($returnresult);
+
                     echo 
                     "<tr>
                         <td class='px-4 py-2'>
@@ -157,10 +176,16 @@ if(isset($_POST["ret"])){
     
                                     <div class='col-3 d-flex justify-content-end align-items-center'>
                                         <div>
-                                            <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>
+                                            <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>";
 
-                                            <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#exampleModal$row[borrowID]'>RETURN</button>
+                                            if(mysqli_num_rows($returnresult) > 0){
+                                                echo"<button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#exampleModal$row[borrowID]' disabled>RETURN</button>";
+                                            }
+                                            else{
+                                                echo"<button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#exampleModal$row[borrowID]'>RETURN</button>";
+                                            }
 
+                                            echo"
                                             <div class='modal fade' id='exampleModal$row[borrowID]' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
                                                 <div class='modal-dialog modal-dialog-centered'>
                                                     <div class='modal-content'>
@@ -170,22 +195,20 @@ if(isset($_POST["ret"])){
                                                     </div>
                                                     <div class='modal-body'>
                                                         <h3 class='text-uppercase mb-0'>$row[book_name]</h3>
-                                                        <form id='returnForm$row[borrowID]' method='post' action='process_return.php'>
+                                                        <form id='returnForm$row[borrowID]' method='post' action=''  autocomplete='off'>
                                                             <input type='hidden' name='borrowID' value='$row[borrowID]'>
-                                                            <div class='mb-3'>
+                                                            <div class='mb-3 mt-2'>
                                                                 <label for='receiptNumber' class='form-label'>Receipt Number:</label>
                                                                 <input type='value' class='form-control' id='receiptNumber' name='receiptNumber' required>
-                                                                
-                                                                <label for='amountPaid' class='form-label'>Amount Paid:</label>
-                                                                <input type='value' class='form-control' id='amountPaid' name='amountPaid' required>
                                                             </div>
                                                         </form>
                                                     </div>
                                                     <div class='modal-footer'>
                                                         <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                                        <button type='submit' form='returnForm$row[borrowID]' class='btn btn-danger'>Submit</button>
+                                                        <button type='submit' form='returnForm$row[borrowID]' class='btn btn-success' id='retpen' name='retpen'>Submit</button>
                                                     </div>
                                                     </div>
+                                                        
                                                 </div>
                                             </div>
 
