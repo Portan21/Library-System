@@ -9,6 +9,7 @@ if(empty($_SESSION["accountID"])){
 }
 else{
   $id = $_SESSION["accountID"];
+  $typeid = $_SESSION["typeID"];
 }
 
 if(empty($_SESSION["typeID"])){
@@ -21,11 +22,85 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
 $currentDate = new DateTime();
+
+if(isset($_POST["submit"])){
+    $email = trim($_POST["email"]);
+    $course = $_POST["course"];
+    $name = "";
+    $password = $_POST["password"];
+    $confirmpassword = $_POST["confirmpassword"];
+    
+    // Verify the email ending
+    if (substr($email,-15) == "@adamson.edu.ph") {
+        // Extract the name part
+        $namePart = substr($email, 0, -15);
+
+        // Replace dots with spaces and capitalize the first letter of each word
+        $name = ucwords(str_replace('.', ' ', $namePart));
+    }
+    else{
+        $name = false;
+    }
+
+    if ($name != false) {
+
+        $duplicateEmail = mysqli_query($conn, "SELECT email FROM patron_acc WHERE email = '$email'");
+        if(mysqli_num_rows($duplicateEmail) > 0){
+            echo "<script> alert('Email Has Already Been Taken'); </script>";
+        }
+        else{
+            if($password == $confirmpassword){
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    
+                $insertquery = "INSERT INTO patron_acc (email, password, pt_name, course, status) VALUES ('$email', '$hashed_password', '$name', '$course', '1')";
+    
+                mysqli_query($conn,$insertquery);
+
+                echo "<script> alert('Patron Registration Successful'); </script>";
+            }
+            else{
+                echo "<script> alert('Password Does Not Match'); </script>";
+            }
+        }
+
+
+    } else {
+        echo "<script> alert('Use an Adamson Email for the registration.'); </script>";
+    }
+
+
+}
+
+if(isset($_POST["regis"])){
+    $fname = $_POST["name"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+    $confirmpassword = $_POST["confirmpassword"];
+    $accounttype = $_POST["accountType"];
+
+    $duplicateEmail = mysqli_query($conn, "SELECT email FROM lib_acc WHERE email = '$email'");
+    if(mysqli_num_rows($duplicateEmail) > 0){
+        echo "<script> alert('Email Has Already Been Taken'); </script>";
+    }
+    else{
+        if($password == $confirmpassword){
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+            $insertquery = "INSERT INTO lib_acc (email, password, name, typeID) VALUES ('$email', '$hashed_password', '$fname', '$accounttype')";
+
+            mysqli_query($conn,$insertquery);
+            echo "<script> alert('Staff Registration Successful'); </script>";
+        }
+        else{
+            echo "<script> alert('Password Does Not Match'); </script>";
+        }
+    }
+}
 ?>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>Issue Book</title>
   <link rel="stylesheet" href="../CSS/index.css">
   <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
   <link rel = "stylesheet" href = "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"> 
@@ -311,7 +386,7 @@ $currentDate = new DateTime();
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="./NewRequest.php" class="nav-link">
+                    <a href="Newrequest.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Borrow Requests</p>
                     </a>
@@ -348,92 +423,107 @@ $currentDate = new DateTime();
 
 
     <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-        <div class = "container py-4 px-4">
-    <div class ="row">
-    <h3 class="mb-4 mt-3 text-uppercase">Profile</h3>
-    <div class="container-fluid">
-        <div class="row mx-md-3 my-md-2 me-1">
-            <div class="col-lg">
-                
+    <section class="content mx-2">
+        
+        <div class="container">
+            <div class="row pt-5">
+                <h1 class="mt-2 mb-3 text-uppercase">Account creation</h1>
             </div>
-            <div class="col-lg-10 border-0 shadow p-2 m-2">
-                <div class="col-lg-12">
+
+            <div class="row mt-2 mb-2">
+                <div class="col mt-2">
+                    <h2 class=" text-uppercase">Staff Account</h2>
+                </div>
+            </div>
+
+            <div>
+                <form action="" method="post" autocomplete="off">
                     <div class="row">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-6">
-                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Name</p>
-                                 </div>
-                                 <div class="col-6">
+                        <form action="" method="post" autocomplete="off">
+                        <div class="col-md-8 mb-3 pr-4">
+                            <label for="name">Full Name</label>
+                            <input type="text" class="form-control mb-2 mt-1" value="" name="name" placeholder="Full Name" required>
+
+                            <label for="email">Email Address</label>
+                            <input type="text" class="form-control mb-2 mt-1" value="" name="email" placeholder="Email Address" required>
+                            
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control mb-2 mt-1" value="" name="password" placeholder="Password" required>
+                            
+                            <label for="confirmpassword">Confirm Password</label>
+                            <input type="password" class="form-control mb-2 mt-1" value="" name="confirmpassword" placeholder="Confirm Password" required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-5 ">
+                            
+                            <label class="input-text" for="accounttype">Account Type</label>
+                                <div class="form-check">
                                     <?php
-                                        if(!empty($_SESSION["typeID"])){
-                                            $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT name
-                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
-                                            WHERE librarianID = '$accID'");
-                                            $row = mysqli_fetch_assoc($result);
-                                            $name = $row['name'];
-                                            echo"
-                                                <p class='px-4 py-2 text-end overview-text text-break'>$name</p>";
-                                        }
-                                    ?>
-                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Email</p>
-                                 </div>
-                                <div class="col-6">
-                                    <?php
-                                        if(!empty($_SESSION["typeID"])){
-                                            $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT email
-                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
-                                            WHERE librarianID = '$accID'");
-                                            $row = mysqli_fetch_assoc($result);
-                                            $email = $row['email'];
-                                            echo"
-                                                <p class='px-4 py-2 text-end overview-text text-break'>$email</p>";
-                                        }
+                                    if($typeid == 1){
+                                        echo"
+                                        <input class='form-check-input' type='radio' name='accountType' id='accountType1' value='1'>
+                                        <h4><label class='form-check-label' for='accountType1'> Admin</label></h4>
+                                        </div>
+                                        <div class='form-check'>
+                                        <input class='form-check-input' type='radio' name='accountType' id='accountType2' value='2'>
+                                        <h4><label class='form-check-label' for='accountType2'> Head Librarian</label></h4>
+                                        </div>
+                                        <div class='form-check'>
+                                        <input class='form-check-input' type='radio' name='accountType' id='accountType3' value='3' checked>
+                                        <h4><label class='form-check-label' for='accountType3'> Librarian</label></h4>";
+                                    }
+                                    else if($typeid == 2){
+                                        echo"
+                                        <input class='form-check-input' type='radio' name='accountType' id='accountType3' value='3' checked>
+                                        <h4><label class='form-check-label' for='accountType3'> Librarian</label></h4>";
+                                    }
+
+
                                     ?>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Account Type</p>
-                                 </div>
-                                <div class="col-6">
-                                    <?php
-                                        if(!empty($_SESSION["typeID"])){
-                                            $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT nameType
-                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
-                                            WHERE librarianID = '$accID'");
-                                            $row = mysqli_fetch_assoc($result);
-                                            $type = $row['nameType'];
-                                            echo"
-                                                <p class='px-4 py-2 text-end overview-text text-break'>$type</p>";
-                                        }
-                                    ?>
-                                 </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <a href="accountedit.php"><input class="edit-button btn btn-secondary pt-1 pb-1 pl-1 pr-1" type="submit" value="Change Password"></a>
-                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg mt-2" id="regis" name="regis" onclick='return confirmApprove()'><b>CREATE ACCOUNT</b></button>
+                        </div>
+                        </form>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Patron Account -->
+            
+            <div class="row mt-2 mb-2">
+                <div class="col mt-3">
+                    <h2 class=" text-uppercase">Patron Account</h2>
+                </div>
+            </div>
+
+            <div>
+                <form action="" method="post" autocomplete="off">
+                    <div class="row pb-5">
+                        <div class="col-md-12 mb-3 pr-4">
+                            <label for="email">Email Address</label>
+                            <input type="text" class="form-control mb-2 mt-1" value="" name="email" placeholder="Email Address" required>
+
+                            <label for="course">Course</label>
+                            <input type="text" class="form-control mb-2 mt-1" value="" name="course" placeholder="Course" required>
+                            
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control mb-2 mt-1" value="" name="password" placeholder="Password" required>
+                            
+                            <label for="confirmpassword">Confirm Password</label>
+                            <input type="password" class="form-control mb-2 mt-1" value="" name="confirmpassword" placeholder="Confirm Password" required>
+
+                        </div>
+
+                        <div class="col-md-12 mb-5 ">
+                            <button type="submit" name="submit" id="submit" class="btn btn-primary btn-lg mt-2"><b>CREATE ACCOUNT</b></button>
                         </div>
                     </div>
-                </div>  
+                </form>
             </div>
-            <div class="col-lg">
-                
-            </div>
-        </div>
-    </div>
 
+    </section>
         
 
 
@@ -447,6 +537,11 @@ $currentDate = new DateTime();
 
 <!-- jQuery -->
 
+<script>
+    function confirmApprove() {
+        return confirm('Press "OK" to proceed on creating the account. Press "Cancel" otherwise.');
+    }
+</script>
 <script src = "https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
