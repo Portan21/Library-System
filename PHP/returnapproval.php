@@ -7,7 +7,116 @@ require 'config.php';
 if(empty($_SESSION["accountID"])){
   header("Location: login.php");
 }
+else{
+    $id = $_SESSION["accountID"];
+}
 
+date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
+$currentDateTime = date('Y-m-d H:i:s');
+
+date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
+$currentDate = new DateTime();
+
+
+if(isset($_POST["ret"])){
+    $borrowID = $_POST["borrowID"];
+
+    $bdateres = mysqli_query($conn, "SELECT borrow_date FROM borrowed_book WHERE borrowID = $borrowID");
+    while($rowbdate = mysqli_fetch_assoc($bdateres)){
+        $borrowdate = new DateTime($rowbdate["borrow_date"]);
+        
+        $insquery = "INSERT INTO returned_book (bookID, patronID, librarianID, borrow_date, return_date, penalty_paid)
+        SELECT bookID, patronID, $id, borrow_date, '$currentDateTime', '0.00'
+        FROM borrowed_book
+        WHERE borrowID = $borrowID";
+        
+        if(mysqli_query($conn, $insquery)){
+            // Insert was successful, now update the book availability
+            $updatequery = "UPDATE book SET availability = '1' WHERE bookID IN (SELECT bookID FROM borrowed_book WHERE borrowID = $borrowID)";
+            
+            if (mysqli_query($conn, $updatequery)) {
+                $delretquery = "DELETE FROM return_form WHERE borrowID = $borrowID";
+                $delquery = "DELETE FROM borrowed_book WHERE borrowID = $borrowID";
+                if(mysqli_query($conn, $delretquery)){
+                    if(mysqli_query($conn, $delquery)){
+                        echo "<script>alert('Approval Successful');</script>";
+                    }
+                    else{
+                        echo "<script>alert('Deleting error');</script>";
+                    }
+                }
+                else{
+                    echo "<script>alert('Deleting error');</script>";
+                }
+            } else {
+                echo "<script>alert('Update error');</script>";
+            }
+            
+        }
+    }
+
+}
+
+if(isset($_POST["retpen"])){
+    $borrowID = $_POST["borrowID"];
+    $receiptnum = $_POST["receipt"];
+    $penaltycost = $_POST["cost"];
+    // Remove commas from the penalty cost
+    $penaltycost = str_replace(',', '', $penaltycost);
+
+    $bdateres = mysqli_query($conn, "SELECT borrow_date FROM borrowed_book WHERE borrowID = $borrowID");
+    while($rowbdate = mysqli_fetch_assoc($bdateres)){
+        $borrowdate = new DateTime($rowbdate["borrow_date"]);
+        
+        $insquery = "INSERT INTO returned_book (bookID, patronID, librarianID, borrow_date, return_date, penalty_paid, receipt_number)
+        SELECT bookID, patronID, $id, borrow_date, '$currentDateTime', '$penaltycost', '$receiptnum'
+        FROM borrowed_book
+        WHERE borrowID = $borrowID";
+        
+        if(mysqli_query($conn, $insquery)){
+            // Insert was successful, now update the book availability
+            $updatequery = "UPDATE book SET availability = '1' WHERE bookID IN (SELECT bookID FROM borrowed_book WHERE borrowID = $borrowID)";
+            
+            if (mysqli_query($conn, $updatequery)) {
+                $delretquery = "DELETE FROM return_form WHERE borrowID = $borrowID";
+                $delquery = "DELETE FROM borrowed_book WHERE borrowID = $borrowID";
+                if(mysqli_query($conn, $delretquery)){
+                    if(mysqli_query($conn, $delquery)){
+                        echo "<script>alert('Approval Successful');</script>";
+                    }
+                    else{
+                        echo "<script>alert('Deleting error');</script>";
+                    }
+                }
+                else{
+                    echo "<script>alert('Deleting error');</script>";
+                }
+            } else {
+                echo "<script>alert('Update error');</script>";
+            }
+            
+        }
+    }
+
+}
+
+if(isset($_POST["rej"])){
+    $borrowID = $_POST["borrowID"];
+
+    // Prepare and execute the DELETE query
+    $deleteQuery = "DELETE FROM return_form WHERE borrowID = $borrowID";
+
+    if(mysqli_query($conn, $deleteQuery)){
+        // Success message if the row is deleted
+        echo "<script>alert('Return Request Rejected Successfully');</script>";
+    } else {
+        // Error message if deletion fails
+        echo "<script>alert('Failed to delete return record');</script>";
+    }
+}
+
+date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
+$currentDate = new DateTime();
 ?>
 <head>
   <meta charset="utf-8">
@@ -37,6 +146,8 @@ if(empty($_SESSION["accountID"])){
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-H0WW0R2IM6V/Td7Zhi5il5Pa7xUkkBkoM2Uq21IxC1JBpSBnG3+g+JwNu9U5+vpf" crossorigin="anonymous">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -139,30 +250,106 @@ if(empty($_SESSION["accountID"])){
             INNER JOIN lib_acc ac on bb.librarianID = ac.librarianID
             INNER JOIN return_form rf ON bb.borrowID = rf.borrowID;");
             while($row = mysqli_fetch_assoc($result)){
-                echo 
-                "<tr>
-                    <td class='px-4 py-2'>
-                        <div class='container'>
-                            <div class='row border border-secondary rounded mt-1 mb-1'>
-                                <div class='col-3 text-break mt-1 mb-1 '>
-                                        <h3 class='text-uppercase mb-0'>$row[bf_name]</h3>
-                                </div>
-                                
-                                <div class='col-7 text-break mt-1 mb-1'>
-                                        <h3 class='text-uppercase mb-0'>$row[book_name]</h3>
-                                        <h5 class='mb-0'> Receipt Number: $row[receipt_number]</h5>
-                                </div>
+                
+                $currentcost = "SELECT cost 
+                FROM penalty_cost 
+                ORDER BY penaltyID DESC 
+                LIMIT 1";
 
-                                <div class='col-2 d-flex justify-content-end align-items-center'>
-                                    <div>
-                                        <button type='submit' class='btn btn-success py-2' onclick='' id='ret' name='ret'>APPROVE</button>
+                $costresult = mysqli_query($conn, $currentcost);
+
+                if ($costresult && mysqli_num_rows($costresult) > 0) {
+                    $currow = mysqli_fetch_assoc($costresult);
+                    $latestCost = $currow['cost'];
+                }
+
+                // Assuming $row is fetched somewhere in the previous loop/iteration
+                $brwdate = new DateTime($row["borrow_date"]);
+                $currentDate = new DateTime(); 
+
+                $intrvl = $brwdate->diff($currentDate);
+                $mnt = $intrvl->y * 12 + $intrvl->m;
+                $dys = $intrvl->d;
+
+                $totday = ($mnt * 30) + $dys;
+                $totpen = $totday * $latestCost;
+
+                // Format the total penalty to two decimal places
+                $totpenFormatted = number_format($totpen, 2);
+
+                if(empty($row['receipt_number'])){
+                    echo 
+                    "<tr>
+                        <td class='px-4 py-2'>
+                            <div class='container'>
+                                <div class='row border border-secondary rounded mt-1 mb-1'>
+                                    <div class='col-3 text-break mt-1 mb-1 '>
+                                            <h3 class='text-uppercase mb-0'>$row[bf_name]</h3>
                                     </div>
+                                    
+                                    <div class='col-7 text-break mt-1 mb-1'>
+                                            <h3 class='text-uppercase mb-0'>$row[book_name]</h3>
+                                    </div>
+    
+                                    <div class='col-2 d-flex justify-content-end align-items-center'>
+                                        <div class='mr-2'>
+                                            <form action='' method='post' autocomplete='off'>
+                                            <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>
+                                            <button type='submit' class='btn btn-danger py-2' onclick='return confirmReturn()' id='rej' name='rej'><i class='fas fa-trash'></i></button>
+                                            </form>
+                                        </div>
+                                        <div>
+                                            <form action='' method='post' autocomplete='off'>
+                                            <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>
+                                            <button type='submit' class='btn btn-primary py-2' onclick='return confirmReturn()' id='ret' name='ret'><i class='fas fa-check'></i></button>
+                                            </form>
+                                        </div>
+                                    </div>
+    
                                 </div>
-
                             </div>
-                        </div>
-                    </td>
-                </tr>";
+                        </td>
+                    </tr>";
+                }
+                else{
+                    echo 
+                    "<tr>
+                        <td class='px-4 py-2'>
+                            <div class='container'>
+                                <div class='row border border-secondary rounded mt-1 mb-1'>
+                                    <div class='col-3 text-break mt-1 mb-1 '>
+                                            <h3 class='text-uppercase mb-0'>$row[bf_name]</h3>
+                                    </div>
+                                    
+                                    <div class='col-7 text-break mt-1 mb-1'>
+                                            <h3 class='text-uppercase mb-0'>$row[book_name]</h3>
+                                            <h5 class='mb-0'> Receipt Number: $row[receipt_number]</h5>
+                                            <h5 class='mt-2 text-danger'> Amount To Paid: $totpenFormatted</h5>
+                                    </div>
+    
+                                    <div class='col-2 d-flex justify-content-end align-items-center'>
+                                        <div class='mr-2'>
+                                            <form action='' method='post' autocomplete='off'>
+                                            <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>
+                                            <button type='submit' class='btn btn-danger py-2' onclick='return confirmReturn()' id='rej' name='rej'><i class='fas fa-trash'></i></button>
+                                            </form>
+                                        </div>
+                                        <div>
+                                            <form action='' method='post' autocomplete='off'>
+                                            <input type='hidden' id='receipt' name='receipt' value='$row[receipt_number]'>
+                                            <input type='hidden' id='cost' name='cost' value='$totpenFormatted'>
+                                            <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>
+                                                <button type='submit' class='btn btn-danger py-2' onclick='return confirmReturn()' id='retpen' name='retpen'><i class='fas fa-check'></i></button>
+                                            </form>
+                                        </div>
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </td>
+                    </tr>";
+                }
+
             }
             ?>
             </tbody>
@@ -180,8 +367,12 @@ if(empty($_SESSION["accountID"])){
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-
-<script src = "https://code.jquery.com/jquery-3.7.0.js"></script>
+<script>
+    function confirmReturn() {
+        return confirm('Press "OK" to confirm the book return. Press "Cancel" otherwise.');
+    }
+    </script>
+    <script src = "https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src = "../JavaScript/accountStatus - librarian.js"></script>

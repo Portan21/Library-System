@@ -33,6 +33,6 @@ if(isset($_GET["rejreq"]) && isset($_GET["rejbook"])){
     
 }
 
-header("location: request.php");
+header("location: newrequest.php");
 exit;
 ?>
