@@ -200,13 +200,6 @@ $currentDate = new DateTime();
                     </li>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <p>
-                    Personal Account Management
-                  </p>
-                </a>
               </li>';}
             else if($type == "2"){ //!!!!!!!!!! CANNOT DISPLAY ADMIN ACCOUNT AND PATRON ACCOUNT?????????????!!!!!!!!!!!!!!
               echo'
@@ -294,13 +287,6 @@ $currentDate = new DateTime();
                     </a>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <p>
-                    Personal Account Management
-                  </p>
-                </a>
               </li>';}
             else {
               echo'
@@ -331,13 +317,6 @@ $currentDate = new DateTime();
                     </a>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <p>
-                    Personal Account Management
-                  </p>
-                </a>
               </li>';}
             }
           ?>
@@ -360,7 +339,7 @@ $currentDate = new DateTime();
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-        <div class = "container py-4">
+        <div class = "container py-4 px-4">
     <div class ="row">
     <h3 class="mb-4 mt-3 text-uppercase">Librarian Accounts</h3>
     <table id="example" class="content-table" style="width:100%">
