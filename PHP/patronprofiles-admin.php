@@ -5,51 +5,22 @@
 require 'config.php';
 
 if(empty($_SESSION["accountID"])){
-    header("Location: login.php");
+  header("Location: login.php");
 }
 else{
-    $id = $_SESSION["accountID"];
+  $id = $_SESSION["accountID"];
 }
+
+if(empty($_SESSION["typeID"])){
+  header("Location: login.php");
+}
+
 
 date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
 $currentDateTime = date('Y-m-d H:i:s');
 
 date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
 $currentDate = new DateTime();
-
-if(isset($_POST["ret"])){
-$borrowID = $_POST["borrowID"];
-
-$bdateres = mysqli_query($conn, "SELECT borrow_date FROM borrowed_book WHERE borrowID = $borrowID");
-while($rowbdate = mysqli_fetch_assoc($bdateres)){
-    $borrowdate = new DateTime($rowbdate["borrow_date"]);
-
-    $interval = $borrowdate->diff($currentDate);
-
-    $months = $interval->y * 12 + $interval->m;
-    // Access the difference in days, hours, minutes, and seconds
-    $days = $interval->d;
-
-    $totaldays = ($months * 30) + $days;
-    $totalpenalty = $totaldays * 10;
-    
-    
-    $insquery = "INSERT INTO returned_book (bookID, borrowerID, librarianID, borrow_date, return_date, penalty_paid)
-    SELECT bookID, borrowerID, $id, borrow_date, '$currentDateTime', '$totalpenalty'
-    FROM borrowed_book
-    WHERE borrowID = $borrowID";
-    if(mysqli_query($conn, $insquery)){
-        $delquery = "DELETE FROM borrowed_book WHERE borrowID = $borrowID";
-        if(mysqli_query($conn, $delquery)){
-        }
-        else{
-            echo"<script>alert('DELETING ERROR');</script>";
-        }
-    }
-
-    //echo"<script>alert('Total Penalty: ₱$totalpenalty.00');</script>";
-}
-}
 ?>
 <head>
   <meta charset="utf-8">
@@ -258,66 +229,224 @@ while($rowbdate = mysqli_fetch_assoc($bdateres)){
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Librarian
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
+
+        <?php
+          if(!empty($_SESSION["typeID"])){
+            $id = $_SESSION["accountID"];
+            $result = mysqli_query($conn, "SELECT typeID FROM lib_acc WHERE librarianID = '$id'");
+            $row = mysqli_fetch_assoc($result);
+            $type = $row['typeID'];
+            if($type == "1"){
+              echo'
               <li class="nav-item">
-                <a href="./librarianprofiles-admin.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Librarian Profiles</p>
+                <a href="#" class="nav-link">
+                  <p>
+                    Account Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="./librarianattendance-admin.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Librarian Attendance</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Patron
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item active">
-                <a href="./patronprofiles-admin.php" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Patron Profiles</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./patronattendance-admin.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Patron Attendance</p>
-                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Librarian Profiles</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./patronprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Patron Profiles</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add an Account</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Edit an Account</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
               <li class="nav-item">
-                <a href="./returnrecords-admin.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Returned Books</p>
+                <a href="#" class="nav-link">
+                  <p>
+                    Report Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                      <a href="./librarianattendance-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Librarian Attendance</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./patronattendance-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Patron Attendance</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnpenaltyrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books (Penalty)</p>
+                      </a>
+                    </li>
+                  </li>
+                </ul>
               </li>
               <li class="nav-item">
-                <a href="./returnpenaltyrecords-admin.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Returned Books (Penalty)</p>
+                <a href="#" class="nav-link">
+                  <p>
+                    Personal Account Management
+                  </p>
                 </a>
+              </li>';}
+            else if($type == "2"){ //!!!!!!!!!! CANNOT DISPLAY ADMIN ACCOUNT AND PATRON ACCOUNT?????????????!!!!!!!!!!!!!!
+              echo'
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Account Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Librarian Profiles</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./patronprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Patron Profiles</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add an Account</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Edit an Account</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
-            </ul>
-          </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Report Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                      <a href="./librarianattendance-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Librarian Attendance</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./patronattendance-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Patron Attendance</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnpenaltyrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books (Penalty)</p>
+                      </a>
+                    </li>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Cost Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Update Penalty Cost</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Personal Account Management
+                  </p>
+                </a>
+              </li>';}
+            else {
+              echo'
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Library Operation Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add a book</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Edit a book</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Borrow Requests</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Personal Account Management
+                  </p>
+                </a>
+              </li>';}
+            }
+          ?>
           
         </ul>
          
