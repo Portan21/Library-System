@@ -91,12 +91,21 @@ $currentDate = new DateTime();
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="dist/img/adminIcon.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
         <div class="info">
-          <a href="#" class="d-block">Admin</a>
-        </div>
+          <?php
+            if(!empty($_SESSION["typeID"])){
+                $id = $_SESSION["accountID"];
+                $result = mysqli_query($conn, "SELECT name, nametype FROM lib_acc 
+                INNER JOIN account_type ON typeId = type_ID
+                WHERE librarianID = '$id'");
+                $row = mysqli_fetch_assoc($result);
+                $name = $row['name'];
+                $nametype = $row['nametype'];
+                echo" <a href='adminprofile.php' class='d-block font-weight-bold text-wrap'>$name</a>";
+                echo" <a href='adminprofile.php' class='d-block font-weight-light'>$nametype</a>";
+            }
+          ?>
+          </div>
       </div>
 
       <!-- SidebarSearch Form -->
@@ -157,8 +166,8 @@ $currentDate = new DateTime();
                   </li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Report Management
                     <i class="right fas fa-angle-left"></i>
@@ -184,7 +193,7 @@ $currentDate = new DateTime();
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="./returnpenaltyrecords-admin.php" class="nav-link">
+                      <a href="./returnpenaltyrecords-admin.php" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Returned Books (Penalty)</p>
                       </a>
@@ -228,8 +237,8 @@ $currentDate = new DateTime();
                   </li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Report Management
                     <i class="right fas fa-angle-left"></i>
@@ -249,7 +258,7 @@ $currentDate = new DateTime();
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="./returnrecords-admin.php" class="nav-link">
+                      <a href="./returnrecords-admin.php" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Returned Books</p>
                       </a>

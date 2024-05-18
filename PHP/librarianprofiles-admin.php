@@ -132,8 +132,8 @@ $currentDate = new DateTime();
             $type = $row['typeID'];
             if($type == "1"){
               echo'
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Account Management
                     <i class="right fas fa-angle-left"></i>
@@ -141,7 +141,7 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                    <a href="./librarianprofiles-admin.php" class="nav-link active">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Librarian Profiles</p>
                     </a>
@@ -203,8 +203,8 @@ $currentDate = new DateTime();
               </li>';}
             else if($type == "2"){ //!!!!!!!!!! CANNOT DISPLAY ADMIN ACCOUNT AND PATRON ACCOUNT?????????????!!!!!!!!!!!!!!
               echo'
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Account Management
                     <i class="right fas fa-angle-left"></i>
@@ -212,7 +212,7 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                    <a href="./librarianprofiles-admin.php" class="nav-link active">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Librarian Profiles</p>
                     </a>
@@ -290,8 +290,8 @@ $currentDate = new DateTime();
               </li>';}
             else {
               echo'
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Library Operation Management
                     <i class="right fas fa-angle-left"></i>

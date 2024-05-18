@@ -166,16 +166,16 @@ $currentDate = new DateTime();
                   </li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Report Management
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
+                <ul class="nav nav-treeview ">
                   <li class="nav-item">
-                      <a href="./librarianattendance-admin.php" class="nav-link">
+                      <a href="./librarianattendance-admin.php" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Librarian Attendance</p>
                       </a>
@@ -237,8 +237,8 @@ $currentDate = new DateTime();
                   </li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Report Management
                     <i class="right fas fa-angle-left"></i>
@@ -246,7 +246,7 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                      <a href="./librarianattendance-admin.php" class="nav-link">
+                      <a href="./librarianattendance-admin.php" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Librarian Attendance</p>
                       </a>
