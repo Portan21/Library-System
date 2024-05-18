@@ -12,7 +12,7 @@ if(empty($_SESSION["accountID"])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Catalog</title>
+  <title>Penalty Cost</title>
   <link rel="stylesheet" href="../CSS/index.css">
   <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
   <link rel = "stylesheet" href = "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"> 
@@ -122,6 +122,36 @@ if(empty($_SESSION["accountID"])){
     <!-- Main content -->
     <section class="content">
         
+    <div class="container pt-5">
+        <div class="row pt-3"></div>
+
+        <div class="row mb-2">
+            <div class="col">
+            </div>
+        </div>
+            <form action="" method="post" autocomplete="off">
+                <div class="row">
+                <div class="col-md-5 mb-3 left-section">
+                    <h1 class="mt-2 text-uppercase">Penalty cost</h1>
+                    <div class="col-md-5">
+                        <label for="title">Update Penalty Cost Per Day (₱)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₱</span>
+                            <input type="number" class="form-control mb-2 mt-1" value="" name="cost" placeholder="00.00" required>
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" name="submit" id="submit" class="btn btn-success btn-large"><b>UPDATE</b></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+                <div class="col-md-7 mb-5 right-section">
+                        <h1 class="mt-2 text-uppercase">Cost History</h1>
+                    </div>
+                </div>
+    </div>
+
 
     </section>
     </div>
