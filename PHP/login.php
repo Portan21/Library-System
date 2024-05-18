@@ -22,7 +22,7 @@ if(isset($_POST["login"])){
             $_SESSION["typeID"] = $row["typeID"];
             $_SESSION["login"] = true;
 
-            header("Location: landing.php");
+            header("Location: adminprofile.php");
         }
         else{
             echo "<script> alert('Wrong Password'); </script>";
