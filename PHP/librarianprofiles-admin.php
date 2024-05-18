@@ -30,6 +30,8 @@ $currentDate = new DateTime();
   <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
   <link rel = "stylesheet" href = "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"> 
 
+  <link rel="icon" href="../Pictures/logo-header.png" type="image/ico">
+
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -82,8 +84,7 @@ $currentDate = new DateTime();
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="dist/img/scribeLogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light"><h6>Library Management</h6></span>
-      <h6>System</h6>
+      <span class="brand-text font-weight-light text-wrap"><h6>Library Management System</h6></span>
     </a>
 
     <!-- Sidebar -->
