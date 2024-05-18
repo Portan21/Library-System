@@ -8,19 +8,6 @@ if(empty($_SESSION["accountID"])){
   header("Location: login.php");
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Retrieve the book title from the POST data
-  $bookTitle = $_POST["bookTitle"];
-  $accountid = $_SESSION["accountID"];
-  
-  // Set the $_SESSION["bookTitle"] variable
-  $_SESSION["bookTitle"] = $bookTitle;
-  
-  // Redirect to another page
-  header("Location: book_edit.php");
-  exit; // Make sure to exit after redirecting
-}
-
 ?>
 <head>
   <meta charset="utf-8">
@@ -114,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Catalog
+                Return Form
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -138,39 +125,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Small boxes (Stat box) -->
         <div class="row">
         <div class = "container py-4">
-        <table id="example" class="content-table" tyle="width:100%">
-        <thead>
-          <tr>
-            <th>Book Title</th>
-            <th>Author</th>
-            <th>Rating</th>
-            <th>Availability</th>
-          </tr>
-        </thead>
-        <tbody>
-		<?php
-        $result = mysqli_query($conn, "SELECT book_name,author,rating,availabilitytype,description FROM book b
-        INNER JOIN availability_type a ON b.availability = a.availabilityID 
-        ORDER BY bookID ASC");
-        while($row = mysqli_fetch_assoc($result)){
-          $bookName = htmlspecialchars($row['book_name']);
-          $description = htmlspecialchars($row['description']);
-          echo "<tr>
-              <td class='px-4 py-2 text-center border'>
-                <form id='bookForm' method='post' action='' style='display: inline;'>
-                <input type='hidden' name='bookTitle' value='$row[book_name]'>
-                <button type='submit' class='book-button' style='border: none; background-color: transparent; cursor: pointer; text-decoration: underline; color: blue; id='bookButton''>$row[book_name]</button>
-                </form>
-              </td>
-              <td class='px-4 py-2 text-center border'>$row[author]</td>
-              <td class='px-4 py-2 text-center border'>$row[rating]</td>
-              <td class='px-4 py-2 text-center border'>$row[availabilitytype]</td>
-          </tr>";
-          
-         }
-         ?>
-        </tbody>
-      </table>
+        <table id="example" class="table table-borderless" style="width:100%">
+            <thead>
+            <tr>
+                <th class='text-uppercase'><h3>RETURN APPROVAL</h3></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $result = mysqli_query($conn, "SELECT a.patronID, bb.borrowID, a.pt_name AS bf_name, ac.name AS lf_name, book_name, bb.borrow_date AS borrow_date, deadline, receipt_number FROM borrowed_book bb
+            INNER JOIN book b on bb.bookID = b.bookID
+            INNER JOIN patron_acc a on bb.patronID = a.patronID
+            INNER JOIN lib_acc ac on bb.librarianID = ac.librarianID
+            INNER JOIN return_form rf ON bb.borrowID = rf.borrowID;");
+            while($row = mysqli_fetch_assoc($result)){
+                echo 
+                "<tr>
+                    <td class='px-4 py-2'>
+                        <div class='container'>
+                            <div class='row border border-secondary rounded mt-1 mb-1'>
+                                <div class='col-3 text-break mt-1 mb-1 '>
+                                        <h3 class='text-uppercase mb-0'>$row[bf_name]</h3>
+                                </div>
+                                
+                                <div class='col-7 text-break mt-1 mb-1'>
+                                        <h3 class='text-uppercase mb-0'>$row[book_name]</h3>
+                                        <h5 class='mb-0'> Receipt Number: $row[receipt_number]</h5>
+                                </div>
+
+                                <div class='col-2 d-flex justify-content-end align-items-center'>
+                                    <div>
+                                        <button type='submit' class='btn btn-success py-2' onclick='' id='ret' name='ret'>APPROVE</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>";
+            }
+            ?>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -184,6 +180,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- ./wrapper -->
 
 <!-- jQuery -->
+
 <script src = "https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
