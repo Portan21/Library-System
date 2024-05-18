@@ -7,25 +7,29 @@ require 'config.php';
 if(empty($_SESSION["accountID"])){
   header("Location: login.php");
 }
-else{
-  $id = $_SESSION["accountID"];
-}
 
 if(empty($_SESSION["typeID"])){
   header("Location: login.php");
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Retrieve the book title from the POST data
+  $bookTitle = $_POST["bookTitle"];
+  $accountid = $_SESSION["accountID"];
+  
+  // Set the $_SESSION["bookTitle"] variable
+  $_SESSION["bookTitle"] = $bookTitle;
+  
+  // Redirect to another page
+  header("Location: book_edit.php");
+  exit; // Make sure to exit after redirecting
+}
 
-date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
-$currentDateTime = date('Y-m-d H:i:s');
-
-date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
-$currentDate = new DateTime();
 ?>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>Catalog</title>
   <link rel="stylesheet" href="../CSS/index.css">
   <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
   <link rel = "stylesheet" href = "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"> 
@@ -52,6 +56,9 @@ $currentDate = new DateTime();
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+  <link rel="stylesheet" href="../CSS/qrcodereader.css">
+  <script defer src="../JavaScript/html5-qrcode-min.js"></script>
+  <script defer src="../JavaScript/qrcodeReader.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -65,7 +72,7 @@ $currentDate = new DateTime();
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="adminprofile.php" class="nav-link">Profile</a>
+      <a href="adminprofile.php" class="nav-link">Profile</a>
       </li>
     </ul>
 
@@ -74,7 +81,7 @@ $currentDate = new DateTime();
       <!-- Navbar Search -->
       <li class="nav-item">
         <a class="nav-link btn btn-light" href="logout.php">Logout</a>
-        </li>
+      </li>
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -84,7 +91,7 @@ $currentDate = new DateTime();
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="dist/img/scribeLogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-bold text-wrap"><h6>Library Management System</h6></span>
+      <span class="brand-text font-weight-light text-wrap"><h6>Library Management System</h6></span>
     </a>
 
     <!-- Sidebar -->
@@ -120,11 +127,12 @@ $currentDate = new DateTime();
         </div>
       </div>
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
+     <!-- Sidebar Menu -->
+     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-        <?php
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+               <?php
           if(!empty($_SESSION["typeID"])){
             $id = $_SESSION["accountID"];
             $result = mysqli_query($conn, "SELECT typeID FROM lib_acc WHERE librarianID = '$id'");
@@ -166,8 +174,8 @@ $currentDate = new DateTime();
                   </li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Report Management
                     <i class="right fas fa-angle-left"></i>
@@ -186,8 +194,8 @@ $currentDate = new DateTime();
                         <p>Patron Attendance</p>
                       </a>
                     </li>
-                    <li class="nav-item">
-                      <a href="./returnrecords-admin.php" class="nav-link">
+                    <li class="nav-item menu-open">
+                      <a href="./returnrecords-admin.php" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Returned Books</p>
                       </a>
@@ -237,8 +245,8 @@ $currentDate = new DateTime();
                   </li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Report Management
                     <i class="right fas fa-angle-left"></i>
@@ -264,7 +272,7 @@ $currentDate = new DateTime();
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="./returnpenaltyrecords-admin.php" class="nav-link">
+                      <a href="./returnpenaltyrecords-admin.php" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Returned Books (Penalty)</p>
                       </a>
@@ -290,8 +298,8 @@ $currentDate = new DateTime();
               </li>';}
             else {
               echo'
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Library Operation Management
                     <i class="right fas fa-angle-left"></i>
@@ -299,7 +307,7 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="NewCatalog.php" class="nav-link">
+                    <a href="#" class="nav-link active">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Catalog</p>
                     </a>
@@ -325,7 +333,7 @@ $currentDate = new DateTime();
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="QRcodeReader.php" class="nav-link">
+                <a href="QRreader-admin.php" class="nav-link">
                   <p>
                     QR Reader (Patron Attendance)
                   </p>
@@ -334,7 +342,6 @@ $currentDate = new DateTime();
             }
           ?>
           
-        </ul>
          
        
       </nav>
@@ -349,92 +356,22 @@ $currentDate = new DateTime();
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-        <div class = "container py-4 px-4">
-    <div class ="row">
-    <h3 class="mb-4 mt-3 text-uppercase">Profile</h3>
-    <div class="container-fluid">
-        <div class="row mx-md-3 my-md-2 me-1">
-            <div class="col-lg">
-                
-            </div>
-            <div class="col-lg-10 border-0 shadow p-2 m-2">
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-6">
-                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Name</p>
-                                 </div>
-                                 <div class="col-6">
-                                    <?php
-                                        if(!empty($_SESSION["typeID"])){
-                                            $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT name
-                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
-                                            WHERE librarianID = '$accID'");
-                                            $row = mysqli_fetch_assoc($result);
-                                            $name = $row['name'];
-                                            echo"
-                                                <p class='px-4 py-2 text-end overview-text text-break'>$name</p>";
-                                        }
-                                    ?>
-                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Email</p>
-                                 </div>
-                                <div class="col-6">
-                                    <?php
-                                        if(!empty($_SESSION["typeID"])){
-                                            $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT email
-                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
-                                            WHERE librarianID = '$accID'");
-                                            $row = mysqli_fetch_assoc($result);
-                                            $email = $row['email'];
-                                            echo"
-                                                <p class='px-4 py-2 text-end overview-text text-break'>$email</p>";
-                                        }
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <p class='px-4 py-2 font-weight-bold text-wrap'>Account Type</p>
-                                 </div>
-                                <div class="col-6">
-                                    <?php
-                                        if(!empty($_SESSION["typeID"])){
-                                            $accID = $_SESSION["accountID"];
-                                            $result = mysqli_query($conn, "SELECT nameType
-                                            FROM account_type a JOIN lib_acc l ON a.type_ID = l.typeID
-                                            WHERE librarianID = '$accID'");
-                                            $row = mysqli_fetch_assoc($result);
-                                            $type = $row['nameType'];
-                                            echo"
-                                                <p class='px-4 py-2 text-end overview-text text-break'>$type</p>";
-                                        }
-                                    ?>
-                                 </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <a href="accountedit.php"><input class="edit-button btn btn-secondary pt-1 pb-1 pl-1 pr-1" type="submit" value="Change Password"></a>
-                            </div>
+        <div class="container-fluid">
+            <div class="row reader">
+                <div class="reader-side col-lg-3">
+                </div>
+                <div class="reader-form col-lg-6 rounded-5 border-0 shadow">
+                    <div class="col-lg-8 reader-frame">
+                        <div id="reader" width="600px"></div>
+                        <div id="scannedName"><b>Name: 
                         </div>
                     </div>
-                </div>  
-            </div>
-            <div class="col-lg">
-                
+                </div>
+                <div class="reader-side col-lg-3">
+                </div>
             </div>
         </div>
     </div>
-
-        
 
 
   <!-- Control Sidebar -->
@@ -446,16 +383,13 @@ $currentDate = new DateTime();
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-
 <script src = "https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src = "../JavaScript/accountStatus - librarian.js"></script>
     <script src = "../JavaScript/changetype.js"></script>
     <script src = "../JavaScript/app2.js"></script>
-    <!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-
+    <script src="dist/js/adminlte.js"></script>
 
 </body>
 </html>

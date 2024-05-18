@@ -1,5 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+if(empty($_SESSION["accountID"])){
+    header("Location: login.php");
+}
+    
+if(empty($_SESSION["typeID"])){
+    header("Location: login.php");
+}
+else{
+    $id = $_SESSION["accountID"];
+    $result = mysqli_query($conn, "SELECT typeID FROM lib_acc 
+    WHERE librarianID = '$id'");
+    $row = mysqli_fetch_assoc($result);
+    $type = $row['typeID'];
+    if(!$type == "3"){
+        header("location: adminprofile.php");
+    }
+}
+?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

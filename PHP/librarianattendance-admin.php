@@ -14,6 +14,16 @@ else{
 if(empty($_SESSION["typeID"])){
   header("Location: login.php");
 }
+else{
+  $id = $_SESSION["accountID"];
+  $result = mysqli_query($conn, "SELECT typeID FROM lib_acc 
+  WHERE librarianID = '$id'");
+  $row = mysqli_fetch_assoc($result);
+  $type = $row['typeID'];
+  if($type == "3"){
+    header("location: adminprofile.php");
+  }
+}
 
 
 date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
@@ -84,7 +94,7 @@ $currentDate = new DateTime();
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="dist/img/scribeLogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light text-wrap"><h6>Library Management System</h6></span>
+      <span class="brand-text font-weight-bold text-wrap"><h6>Library Management System</h6></span>
     </a>
 
     <!-- Sidebar -->
