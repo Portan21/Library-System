@@ -4,7 +4,7 @@ $(document).ready(function() {
 
 new DataTable('#example', {
     lengthMenu: [
-        [35, 10, 25, 50, -1],
-        [35, 10, 25, 50, 'All']
+        [35, 5, 10, 25, 50, 100, -1],
+        [35, 5, 10, 25, 50, 100, 'All']
     ]
 });
