@@ -20,7 +20,7 @@ else{
   WHERE librarianID = '$id'");
   $row = mysqli_fetch_assoc($result);
   $type = $row['typeID'];
-  if($type == "3"){
+  if(!($type == "1")){
     header("location: adminprofile.php");
   }
 }
