@@ -334,7 +334,7 @@ $result = mysqli_query($conn, "SELECT requestID, bookID FROM book_request WHERE 
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-        <div class="row">
+        <div class="row pt-4">
         <div class = "container py-4">
         <table id="example" class="table table-borderless" style="width:100%">
             <thead>
