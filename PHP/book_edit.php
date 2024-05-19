@@ -158,21 +158,186 @@ if(empty($_SESSION["accountID"])){
         </div>
       </div>
 
-     <!-- Sidebar Menu -->
-     <nav class="mt-2">
+     
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Catalog
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
+
+        <?php
+          if(!empty($_SESSION["typeID"])){
+            $id = $_SESSION["accountID"];
+            $result = mysqli_query($conn, "SELECT typeID FROM lib_acc WHERE librarianID = '$id'");
+            $row = mysqli_fetch_assoc($result);
+            $type = $row['typeID'];
+            if($type == "1"){
+              echo'
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Account Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Librarian Profiles</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./patronprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Patron Profiles</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="createaccount.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add an Account</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Report Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="./patronattendance-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Patron Attendance</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnpenaltyrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books (Penalty)</p>
+                      </a>
+                    </li>
+                  </li>
+                </ul>
+              </li>';}
+            else if($type == "2"){ //!!!!!!!!!! CANNOT DISPLAY ADMIN ACCOUNT AND PATRON ACCOUNT?????????????!!!!!!!!!!!!!!
+              echo'
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Account Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="createaccount.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add an Account</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Report Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="./patronattendance-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Patron Attendance</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnpenaltyrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books (Penalty)</p>
+                      </a>
+                    </li>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Cost Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="penaltycost.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Update Penalty Cost</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>';}
+            else {
+              echo'
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
+                  <p>
+                    Library Operation Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="NewCatalog.php" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Catalog</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="newbook.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add Book</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./NewRequest.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Borrow Requests</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="returnapproval.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Return Requests</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="QRcodeReader.php" class="nav-link">
+                  <p>
+                    QR Reader (Patron Attendance)
+                  </p>
+                </a>
+              </li>';}
+            }
+          ?>
           
+        </ul>
          
        
       </nav>
@@ -318,7 +483,7 @@ if(empty($_SESSION["accountID"])){
                         }, 1000); // 1000 milliseconds = 1 second
                         </script>
 
-                        <button type="submit" name="submit" id="submit" class="btn btn-primary btn-lg "><b>EDIT BOOK DETAILS</b></button>
+                        <button type="submit" name="submit" id="submit" class="btn btn-primary btn-lg " onclick="return confirmReturn()"><b>EDIT BOOK DETAILS</b></button>
                     </div>
                 </div>
             </form>
@@ -341,6 +506,11 @@ if(empty($_SESSION["accountID"])){
 <!-- ./wrapper -->
 
 <!-- jQuery -->
+<script>
+    function confirmReturn() {
+        return confirm('Press "OK" to confirm the book details. Press "Cancel" otherwise.');
+    }
+</script>
 <script src = "https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>

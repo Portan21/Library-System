@@ -9,6 +9,7 @@ if(empty($_SESSION["accountID"])){
 }
 else{
   $id = $_SESSION["accountID"];
+  $type = $_SESSION["typeID"];
 }
 
 $id = $_SESSION["accountID"];
@@ -33,6 +34,21 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
 $currentDate = new DateTime();
+
+if(isset($_POST["reset"])){
+  $librarianID = $_POST["librarianID"];
+  $password = $_POST["newpass"];
+  $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+  $insquery = "UPDATE lib_acc SET password = '$hashed_password' WHERE librarianID = '$librarianID'";
+
+  if(mysqli_query($conn, $insquery)){
+     echo "<script>alert('Reset Password Successful.');</script>";
+  }
+  else{
+      echo "<script>alert('Reset Password Unsuccessful.');</script>";
+  }
+}
 ?>
 <head>
   <meta charset="utf-8">
@@ -132,6 +148,7 @@ $currentDate = new DateTime();
         </div>
       </div>
 
+      
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -152,7 +169,7 @@ $currentDate = new DateTime();
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
+                  <li class="nav-item" >
                     <a href="./librarianprofiles-admin.php" class="nav-link active">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Librarian Profiles</p>
@@ -165,15 +182,9 @@ $currentDate = new DateTime();
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="createaccount.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add an Account</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Edit an Account</p>
                     </a>
                   </li>
                 </ul>
@@ -186,12 +197,6 @@ $currentDate = new DateTime();
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                      <a href="./librarianattendance-admin.php" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Librarian Attendance</p>
-                      </a>
-                    </li>
                     <li class="nav-item">
                       <a href="./patronattendance-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -215,8 +220,8 @@ $currentDate = new DateTime();
               </li>';}
             else if($type == "2"){ //!!!!!!!!!! CANNOT DISPLAY ADMIN ACCOUNT AND PATRON ACCOUNT?????????????!!!!!!!!!!!!!!
               echo'
-              <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
                   <p>
                     Account Management
                     <i class="right fas fa-angle-left"></i>
@@ -224,27 +229,9 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="./librarianprofiles-admin.php" class="nav-link active">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Librarian Profiles</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./patronprofiles-admin.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Patron Profiles</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="createaccount.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add an Account</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Edit an Account</p>
                     </a>
                   </li>
                 </ul>
@@ -257,12 +244,6 @@ $currentDate = new DateTime();
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                      <a href="./librarianattendance-admin.php" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Librarian Attendance</p>
-                      </a>
-                    </li>
                     <li class="nav-item">
                       <a href="./patronattendance-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -293,7 +274,7 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="penaltycost.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Update Penalty Cost</p>
                     </a>
@@ -302,8 +283,8 @@ $currentDate = new DateTime();
               </li>';}
             else {
               echo'
-              <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
                   <p>
                     Library Operation Management
                     <i class="right fas fa-angle-left"></i>
@@ -311,30 +292,37 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="NewCatalog.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Catalog</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="newbook.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add Book</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                    <a href="./NewRequest.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Borrow Requests</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                    <a href="returnapproval.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Return Requests</p>
                     </a>
                   </li>
                 </ul>
+              </li>
+              <li class="nav-item">
+                <a href="QRcodeReader.php" class="nav-link">
+                  <p>
+                    QR Reader (Patron Attendance)
+                  </p>
+                </a>
               </li>';}
             }
           ?>
@@ -368,6 +356,11 @@ $currentDate = new DateTime();
             <th class='px-4 py-2 text-center'>Email</th>
             <th class='px-4 py-2 text-center'>Account Type</th>
             <th class='px-4 py-2 text-center'>Status</th>
+            <?php
+              if($type == 1){
+                echo"<th class='px-4 py-2 text-center'>Password</th>";
+              }
+            ?>
         </tr>
         </thead>
         <tbody>
@@ -454,6 +447,7 @@ $currentDate = new DateTime();
                                 <td class='px-4 py-2 text-center'>$row[email]</td>
                                 <td class='px-4 py-2 text-center'>$row[nametype]</td>
                                 <td class='px-4 py-2 text-center'><button id='statusButton$row[librarianID]' class='select btn btn-success'>Enabled</button></td>
+                                <td class='text-center'><button class='select btn btn-dark  type='button' data-bs-toggle='modal' data-bs-target='#exampleModal$row[librarianID]'><i class='fa fa-unlock-alt' aria-hidden='true'></i></button></td>
                             </tr>";
                         }
                         else{
@@ -463,6 +457,7 @@ $currentDate = new DateTime();
                                 <td class='px-4 py-2 text-center'>$row[email]</td>
                                 <td class='px-4 py-2 text-center'>$row[nametype]</td>
                                 <td class='px-4 py-2 text-center'><button id='statusButton$row[librarianID]' class='select btn btn-danger'>Disabled</button></td>
+                                <td class='text-center'><button class='select btn btn-dark  type='button' data-bs-toggle='modal' data-bs-target='#exampleModal$row[librarianID]'><i class='fa fa-unlock-alt' aria-hidden='true'></i></button></td>
                             </tr>";
                         }
                     }
@@ -474,6 +469,7 @@ $currentDate = new DateTime();
                               <td class='px-4 py-2 text-center'>$row[email]</td>
                               <td class='px-4 py-2 text-center'>$row[nametype]</td>
                               <td class='px-4 py-2 text-center'><button id='statusButton$row[librarianID]' class='select btn btn-success'>Enabled</button></td>
+                              <td class='text-center'><button class='select btn btn-dark  type='button' data-bs-toggle='modal' data-bs-target='#exampleModal$row[librarianID]'><i class='fa fa-unlock-alt' aria-hidden='true'></i></button></td>
                           </tr>";
                       }
                         else{
@@ -483,6 +479,7 @@ $currentDate = new DateTime();
                               <td class='px-4 py-2 text-center'>$row[email]</td>
                               <td class='px-4 py-2 text-center'><button id='typeButton$row[librarianID]' onmouseover='typehover($row[librarianID])' onmouseout='typehoverOut($row[librarianID])' onclick='changetype($row[librarianID])' class='select btn btn-warning'>$row[nametype]</td>
                               <td class='px-4 py-2 text-center'><button id='statusButton$row[librarianID]' onmouseover='hover($row[librarianID])' onmouseout='hoverOut($row[librarianID])' onclick='changeStatus($row[librarianID])' class='select btn btn-success'>Enabled</button></td>
+                              <td class='text-center'><button class='select btn btn-dark  type='button' data-bs-toggle='modal' data-bs-target='#exampleModal$row[librarianID]'><i class='fa fa-unlock-alt' aria-hidden='true'></i></button></td>
                           </tr>";
                         }
                     }
@@ -493,8 +490,38 @@ $currentDate = new DateTime();
                             <td class='px-4 py-2 text-center'>$row[email]</td>
                             <td class='px-4 py-2 text-center'><button id='typeButton$row[librarianID]' onmouseover='typehover($row[librarianID])' onmouseout='typehoverOut($row[librarianID])' onclick='changetype($row[librarianID])' class='select btn btn-warning'>$row[nametype]</td>
                             <td class='px-4 py-2 text-center'><button id='statusButton$row[librarianID]' onmouseover='hover($row[librarianID])' onmouseout='hoverOut($row[librarianID])' onclick='changeStatus($row[librarianID])' class='select btn btn-danger'>Disabled</button></td>
+                            <td class='text-center'><button class='select btn btn-dark  type='button' data-bs-toggle='modal' data-bs-target='#exampleModal$row[librarianID]'><i class='fa fa-unlock-alt' aria-hidden='true'></i></button></td>
                         </tr>";
                     }
+                  
+                  echo"
+                  <div class='modal fade' id='exampleModal$row[librarianID]' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                      <div class='modal-dialog modal-dialog-centered'>
+                          <div class='modal-content'>
+                          <div class='modal-header'>
+                              <h1 class='modal-title fs-5 text-uppercase mb-0' id='exampleModalLabel'>Reset Password - Staff</h1>
+                              <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                          </div>
+                          <div class='modal-body'>
+
+                              <h3 class='text-uppercase mb-0'>$row[name]</h3>
+                              <form id='reset$row[librarianID]' method='post' action=''  autocomplete='off'>
+                                  <input type='hidden' name='librarianID' value='$row[librarianID]'>
+                                  <div class='mb-4 mt-3'>
+                                      <label for='newpass' class='form-label'>New Password:</label>
+                                      <input type='text' class='form-control' id='newpass' name='newpass' value='adamson1932' required>
+                                  </div>
+                              </form>
+
+                          </div>
+                          <div class='modal-footer'>
+                              <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                              <button type='submit' form='reset$row[librarianID]' class='btn btn-primary' id='reset' name='reset'>Change Password</button>
+                          </div>
+                          </div>
+                              
+                      </div>
+                  </div>";
                 }
             }     
             else{
@@ -552,6 +579,9 @@ $currentDate = new DateTime();
     <!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>
 
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

@@ -230,6 +230,7 @@ $currentDate = new DateTime();
         </div>
       </div>
 
+      
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -263,15 +264,9 @@ $currentDate = new DateTime();
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="createaccount.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add an Account</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Edit an Account</p>
                     </a>
                   </li>
                 </ul>
@@ -284,12 +279,6 @@ $currentDate = new DateTime();
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                      <a href="./librarianattendance-admin.php" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Librarian Attendance</p>
-                      </a>
-                    </li>
                     <li class="nav-item">
                       <a href="./patronattendance-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -322,27 +311,9 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="./librarianprofiles-admin.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Librarian Profiles</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./patronprofiles-admin.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Patron Profiles</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="createaccount.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add an Account</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Edit an Account</p>
                     </a>
                   </li>
                 </ul>
@@ -355,12 +326,6 @@ $currentDate = new DateTime();
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                      <a href="./librarianattendance-admin.php" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Librarian Attendance</p>
-                      </a>
-                    </li>
                     <li class="nav-item">
                       <a href="./patronattendance-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -391,7 +356,7 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="penaltycost.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Update Penalty Cost</p>
                     </a>
@@ -415,13 +380,13 @@ $currentDate = new DateTime();
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="newbook.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add Book</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="Newrequest.php" class="nav-link">
+                    <a href="./NewRequest.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Borrow Requests</p>
                     </a>
@@ -461,7 +426,7 @@ $currentDate = new DateTime();
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-        <div class="row">
+        <div class="row pt-4">
         <div class = "container py-4">
         <table id="example" class="table table-borderless" style="width:100%">
             <thead>
@@ -522,7 +487,7 @@ $currentDate = new DateTime();
                                         <div class='mr-2'>
                                             <form action='' method='post' autocomplete='off'>
                                             <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>
-                                            <button type='submit' class='btn btn-danger py-2' onclick='return confirmReturn()' id='rej' name='rej'><i class='fas fa-trash'></i></button>
+                                            <button type='submit' class='btn btn-danger py-2' onclick='return rejectReturn()' id='rej' name='rej'><i class='fas fa-trash'></i></button>
                                             </form>
                                         </div>
                                         <div>
@@ -558,7 +523,7 @@ $currentDate = new DateTime();
                                         <div class='mr-2'>
                                             <form action='' method='post' autocomplete='off'>
                                             <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>
-                                            <button type='submit' class='btn btn-danger py-2' onclick='return confirmReturn()' id='rej' name='rej'><i class='fas fa-trash'></i></button>
+                                            <button type='submit' class='btn btn-danger py-2' onclick='return rejectReturn()' id='rej' name='rej'><i class='fas fa-trash'></i></button>
                                             </form>
                                         </div>
                                         <div>
@@ -597,6 +562,10 @@ $currentDate = new DateTime();
 <script>
     function confirmReturn() {
         return confirm('Press "OK" to confirm the book return. Press "Cancel" otherwise.');
+    }
+    
+    function rejectReturn() {
+        return confirm('Press "OK" to reject the book return. Press "Cancel" otherwise.');
     }
     </script>
     <script src = "https://code.jquery.com/jquery-3.7.0.js"></script>

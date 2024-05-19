@@ -63,54 +63,35 @@ if(isset($_POST["ret"])){
 </head>
 <body>
 
-<nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary shadow">
+<nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary shadow px-5">
     <div class="container-fluid">
-        <a class="navbar-brand" href="landing.php"><img src="../Pictures/logo.png" style="height: 9,5%; width: 9.5%;">SCRIBE</a>
+        
+        <a class="navbar-brand"  style="max-width: 150px;"  href="landing.php">
+            <img src="../Pictures/logo.png" style="height: 9.5%; width: 35%;" alt="Logo">SCRIBE
+        </a>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mb-lg-0 ms-auto">
-
-            <li class="nav-item">
-            <a class="nav-link" href="catalogs.php">Catalog</a>
-            </li>
-
-            <li class="nav-item">
-            <a class="nav-link" href="return.php">Return</a>
-            </li>
-	    <?php
-	    if(!empty($_SESSION["typeID"])){
-	    echo"
-            <li class='nav-item'>
-            <a class='nav-link' href='request.php'>Request</a>
-            </li>
-
-            <li class='nav-item'>
-            <a class='nav-link' href='borrowed.php'>Borrowed</a>
-            </li>
-
-            <li class='nav-item'>
-            <a class='nav-link' href='penalty.php'>Penalty</a>
-            </li>
-            
-            <li class='nav-item'>
-            <a class='nav-link' href='librarianprofiles-records.php'>Records</a>
-            </li>";
-	    }
-
-	    ?>
-
-            <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="profile.php">Profile</a>
-            </li>
-
-            <li class="nav-item">
-            <a class="nav-link" href="logout.php">Logout</a>
-            </li>
-        </ul>
+            <ul class="navbar-nav mb-lg-0 ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="catalogs.php">CATALOG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="return.php">RETURN</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link active" aria-current="page" href="profile.php">PROFILE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout.php">LOGOUT</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    </nav>
+</nav>
 
     <div class="container-fluid">
         <div class="row mx-md-3 my-md-2 me-1">

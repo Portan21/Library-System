@@ -41,7 +41,7 @@ if(isset($_POST["login"])){
                 $_SESSION["course"] = $crow["course"];
                 $_SESSION["login"] = true;
 
-                header("Location: patron_landing.php");
+                header("Location: catalogs.php");
             }
             else{
                 echo "<script> alert('Wrong Password'); </script>";
