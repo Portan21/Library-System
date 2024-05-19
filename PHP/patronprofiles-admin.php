@@ -31,11 +31,43 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
 $currentDate = new DateTime();
+
+if(isset($_POST["reset"])){
+  $patronID = $_POST["patronID"];
+  $password = $_POST["newpass"];
+  $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+
+  $insquery = "UPDATE patron_acc SET password = '$hashed_password' WHERE patronID = '$patronID'";
+
+  if(mysqli_query($conn, $insquery)){
+     echo "<script>alert('Reset Password Successful.');</script>";
+  }
+  else{
+      echo "<script>alert('Reset Password Unsuccessful.');</script>";
+  }
+}
+
+if(isset($_POST["updatecourse"])){
+  $patronID = $_POST["patronID"];
+  $course = $_POST["course"];
+
+  $insquery = "UPDATE patron_acc SET course = '$course' WHERE patronID = '$patronID'";
+
+  if(mysqli_query($conn, $insquery)){
+     echo "<script>alert('Course Update Successful.');</script>";
+  }
+  else{
+      echo "<script>alert('Course Update Unsuccessful.');</script>";
+  }
+}
+
+
 ?>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>Patron Accounts</title>
   <link rel="stylesheet" href="../CSS/index.css">
   <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
   <link rel = "stylesheet" href = "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"> 
@@ -62,6 +94,7 @@ $currentDate = new DateTime();
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -367,6 +400,7 @@ $currentDate = new DateTime();
             <th class='px-4 py-2 text-center'>Email</th>
             <th class='px-4 py-2 text-center'>Course</th>
             <th class='px-4 py-2 text-center'>Status</th>
+            <th class='px-4 py-2 text-center'>Password</th>
         </tr>
         </thead>
         <tbody>
@@ -379,18 +413,149 @@ $currentDate = new DateTime();
                             <td class='px-4 py-2 text-center'>$row[patronID]</td>
                             <td class='px-4 py-2 text-center'>$row[pt_name]</td>
                             <td class='px-4 py-2 text-center'>$row[email]</td>
-                            <td class='px-4 py-2 text-center'>$row[course]</td>
+                            <td class='px-4 py-2 text-center'>
+                                <button type='button' class='btn btn-link' data-bs-toggle='modal' data-bs-target='#courseModal$row[patronID]'>
+                                    $row[course]
+                                </button>
+                            </td>
                             <td class='px-4 py-2 text-center'><button id='statusButton$row[patronID]' onmouseover='hover($row[patronID])' onmouseout='hoverOut($row[patronID])' onclick='changeStatus($row[patronID])' class='select btn btn-success'>Enabled</button></td>
-                        </tr>";
+                            <td class='text-center'><button class='select btn btn-dark  type='button' data-bs-toggle='modal' data-bs-target='#exampleModal$row[patronID]'><i class='fa fa-unlock-alt' aria-hidden='true'></i></button></td>
+                          </tr>";
+
+                          
+                          echo"
+                          <div class='modal fade' id='exampleModal$row[patronID]' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                              <div class='modal-dialog modal-dialog-centered'>
+                                  <div class='modal-content'>
+                                  <div class='modal-header'>
+                                      <h1 class='modal-title fs-5 text-uppercase mb-0' id='exampleModalLabel'>Reset Password</h1>
+                                      <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                  </div>
+                                  <div class='modal-body'>
+
+                                      <h3 class='text-uppercase mb-0'>$row[pt_name]</h3>
+                                      <form id='reset$row[patronID]' method='post' action=''  autocomplete='off'>
+                                          <input type='hidden' name='patronID' value='$row[patronID]'>
+                                          <div class='mb-4 mt-3'>
+                                              <label for='newpass' class='form-label'>New Password:</label>
+                                              <input type='text' class='form-control' id='newpass' name='newpass' value='adamson1932' required>
+                                          </div>
+                                      </form>
+
+                                  </div>
+                                  <div class='modal-footer'>
+                                      <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                      <button type='submit' form='reset$row[patronID]' class='btn btn-primary' id='reset' name='reset'>Change Password</button>
+                                  </div>
+                                  </div>
+                                      
+                              </div>
+                          </div>
+                          
+                          
+                          <div class='modal fade' id='courseModal$row[patronID]' tabindex='-1' aria-labelledby='courseModalLabel$row[patronID]' aria-hidden='true'>
+
+                            <div class='modal-dialog modal-dialog-centered'>
+                                <div class='modal-content'>
+                                <div class='modal-header'>
+                                    <h1 class='modal-title fs-5 text-uppercase mb-0' id='exampleModalLabel'>Course Information</h1>
+                                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                </div>
+                                <div class='modal-body'>
+
+                                    <h3 class='text-uppercase mb-0'>$row[pt_name]</h3>
+                                    <form id='course$row[patronID]' method='post' action=''  autocomplete='off'>
+                                        <input type='hidden' name='patronID' value='$row[patronID]'>
+                                        <div class='mb-4 mt-3'>
+                                            <label for='course' class='form-label'>Course:</label>
+                                            <input type='text' class='form-control' id='course' name='course' value='$row[course]' required>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                <div class='modal-footer'>
+                                    <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                    <button type='submit' form='course$row[patronID]' class='btn btn-primary' id='updatecourse' name='updatecourse'>Update Course</button>
+                                </div>
+                                </div>
+                                    
+                            </div>
+
+                          </div>";
                     }
                     else{
                         echo "<tr>
                             <td class='px-4 py-2 text-center'>$row[patronID]</td>
                             <td class='px-4 py-2 text-center'>$row[pt_name]</td>
                             <td class='px-4 py-2 text-center'>$row[email]</td>
-                            <td class='px-4 py-2 text-center'>$row[course]</td>
+                            <td class='px-4 py-2 text-center'>
+                                <button type='button' class='btn btn-link' data-bs-toggle='modal' data-bs-target='#courseModal$row[patronID]'>
+                                    $row[course]
+                                </button>
+                            </td>
                             <td class='px-4 py-2 text-center'><button id='statusButton$row[patronID]' onmouseover='hover($row[patronID])' onmouseout='hoverOut($row[patronID])' onclick='changeStatus($row[patronID])' class='select btn btn-danger'>Disabled</button></td>
-                        </tr>";
+                            <td class='text-center'><button class='select btn btn-dark  type='button' data-bs-toggle='modal' data-bs-target='#exampleModal$row[patronID]'><i class='fa fa-unlock-alt' aria-hidden='true'></i></button></td>
+                          </tr>";
+
+                          
+                          echo"
+                          <div class='modal fade' id='exampleModal$row[patronID]' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                              <div class='modal-dialog modal-dialog-centered'>
+                                  <div class='modal-content'>
+                                  <div class='modal-header'>
+                                      <h1 class='modal-title fs-5 text-uppercase mb-0' id='exampleModalLabel'>Reset Password</h1>
+                                      <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                  </div>
+                                  <div class='modal-body'>
+
+                                      <h3 class='text-uppercase mb-0'>$row[pt_name]</h3>
+                                      <form id='reset$row[patronID]' method='post' action=''  autocomplete='off'>
+                                          <input type='hidden' name='patronID' value='$row[patronID]'>
+                                          <div class='mb-4 mt-3'>
+                                              <label for='newpass' class='form-label'>New Password:</label>
+                                              <input type='text' class='form-control' id='newpass' name='newpass' value='adamson1932' required>
+                                          </div>
+                                      </form>
+
+                                  </div>
+                                  <div class='modal-footer'>
+                                      <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                      <button type='submit' form='reset$row[patronID]' class='btn btn-primary' id='reset' name='reset'>Change Password</button>
+                                  </div>
+                                  </div>
+                                      
+                              </div>
+                          </div>
+                          
+
+                          <div class='modal fade' id='courseModal$row[patronID]' tabindex='-1' aria-labelledby='courseModalLabel$row[patronID]' aria-hidden='true'>
+
+                            <div class='modal-dialog modal-dialog-centered'>
+                                <div class='modal-content'>
+                                <div class='modal-header'>
+                                    <h1 class='modal-title fs-5 text-uppercase mb-0' id='exampleModalLabel'>Course Information</h1>
+                                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                </div>
+                                <div class='modal-body'>
+
+                                    <h3 class='text-uppercase mb-0'>$row[pt_name]</h3>
+                                    <form id='course$row[patronID]' method='post' action=''  autocomplete='off'>
+                                        <input type='hidden' name='patronID' value='$row[patronID]'>
+                                        <div class='mb-4 mt-3'>
+                                            <label for='course' class='form-label'>Course:</label>
+                                            <input type='text' class='form-control' id='course' name='course' value='$row[course]' required>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                <div class='modal-footer'>
+                                    <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                    <button type='submit' form='course$row[patronID]' class='btn btn-primary' id='updatecourse' name='updatecourse'>Update Course</button>
+                                </div>
+                                </div>
+                                    
+                            </div>
+                          ";
                     }
                 }     
             ?>
@@ -415,6 +580,10 @@ $currentDate = new DateTime();
     <script src = "../JavaScript/changetype.js"></script>
     <script src = "../JavaScript/app2.js"></script>
     <script src="dist/js/adminlte.js"></script>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
