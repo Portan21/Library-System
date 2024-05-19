@@ -3,7 +3,9 @@
 font-family: sans-serif;
   }
 
-
+table.table.dataTable > :not(caption) > * > * {
+  background-color: transparent;
+}
 
 .select{
   width: auto;

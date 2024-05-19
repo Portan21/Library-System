@@ -8,8 +8,29 @@ if(empty($_SESSION["accountID"])){
   header("Location: login.php");
 }
 else{
-    $id = $_SESSION["accountID"];
+  $id = $_SESSION["accountID"];
 }
+
+if(empty($_SESSION["typeID"])){
+  header("Location: login.php");
+}
+else{
+  $id = $_SESSION["accountID"];
+  $result = mysqli_query($conn, "SELECT typeID FROM lib_acc 
+  WHERE librarianID = '$id'");
+  $row = mysqli_fetch_assoc($result);
+  $type = $row['typeID'];
+  if(!$type == "2"){
+    header("location: adminprofile.php");
+  }
+}
+
+
+date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
+$currentDateTime = date('Y-m-d H:i:s');
+
+date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
+$currentDate = new DateTime();
 
 if(isset($_POST["upd"])){
     $cost = $_POST["cost"];
@@ -30,6 +51,7 @@ if(isset($_POST["upd"])){
     }
 }
 
+
 ?>
 <head>
   <meta charset="utf-8">
@@ -38,6 +60,8 @@ if(isset($_POST["upd"])){
   <link rel="stylesheet" href="../CSS/index.css">
   <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
   <link rel = "stylesheet" href = "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"> 
+
+  <link rel="icon" href="../Pictures/logo-header.png" type="image/ico">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -72,12 +96,17 @@ if(isset($_POST["upd"])){
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
+      <a href="adminprofile.php" class="nav-link">Profile</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Navbar Search -->
+      <li class="nav-item">
+        <a class="nav-link btn btn-light" href="logout.php">Logout</a>
       </li>
-    </ul> 
+    </ul>
   </nav>
   <!-- /.navbar -->
 
@@ -86,20 +115,28 @@ if(isset($_POST["upd"])){
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="dist/img/scribeLogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light"><h6>Library Management</h6></span>
-      <h6>System</h6>
+      <span class="brand-text font-weight-bold text-wrap"><h6>Library Management System</h6></span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="dist/img/adminIcon.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
         <div class="info">
-          <a href="#" class="d-block">Admin</a>
-        </div>
+          <?php
+            if(!empty($_SESSION["typeID"])){
+                $id = $_SESSION["accountID"];
+                $result = mysqli_query($conn, "SELECT name, nametype FROM lib_acc 
+                INNER JOIN account_type ON typeId = type_ID
+                WHERE librarianID = '$id'");
+                $row = mysqli_fetch_assoc($result);
+                $name = $row['name'];
+                $nametype = $row['nametype'];
+                echo" <a href='adminprofile.php' class='d-block font-weight-bold text-wrap'>$name</a>";
+                echo" <a href='adminprofile.php' class='d-block font-weight-light'>$nametype</a>";
+            }
+          ?>
+          </div>
       </div>
 
       <!-- SidebarSearch Form -->
@@ -114,21 +151,214 @@ if(isset($_POST["upd"])){
         </div>
       </div>
 
-     <!-- Sidebar Menu -->
-     <nav class="mt-2">
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Return Form
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
+
+        <?php
+          if(!empty($_SESSION["typeID"])){
+            $id = $_SESSION["accountID"];
+            $result = mysqli_query($conn, "SELECT typeID FROM lib_acc WHERE librarianID = '$id'");
+            $row = mysqli_fetch_assoc($result);
+            $type = $row['typeID'];
+            if($type == "1"){
+              echo'
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Account Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Librarian Profiles</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./patronprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Patron Profiles</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add an Account</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Edit an Account</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
+                  <p>
+                    Report Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview ">
+                  <li class="nav-item">
+                      <a href="./librarianattendance-admin.php" class="nav-link active">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Librarian Attendance</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./patronattendance-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Patron Attendance</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnpenaltyrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books (Penalty)</p>
+                      </a>
+                    </li>
+                  </li>
+                </ul>
+              </li>';}
+            else if($type == "2"){ //!!!!!!!!!! CANNOT DISPLAY ADMIN ACCOUNT AND PATRON ACCOUNT?????????????!!!!!!!!!!!!!!
+              echo'
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Account Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Librarian Profiles</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./patronprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Patron Profiles</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add an Account</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Edit an Account</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Report Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                      <a href="./librarianattendance-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Librarian Attendance</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./patronattendance-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Patron Attendance</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./returnpenaltyrecords-admin.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Returned Books (Penalty)</p>
+                      </a>
+                    </li>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
+                  <p>
+                    Cost Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Update Penalty Cost</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>';}
+            else {
+              echo'
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Library Operation Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Catalog</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add Book</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Borrow Requests</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Return Requests</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>';}
+            }
+          ?>
           
+        </ul>
          
        
       </nav>
@@ -142,98 +372,101 @@ if(isset($_POST["upd"])){
 
 
     <!-- Main content -->
-    <section class="content">
+<section class="content">
         
-    <div class="container pt-5">
-
-        <div class="row pt-3"></div>
-
-        <div class="row mb-2">
-            <div class="col">
-                <h1 class="mt-2 mb-3 text-uppercase">Penalty cost</h1>
-            </div>
-        </div>
-
-            <form action="" method="post" autocomplete="off">
-        <div class="row">
-            <div class="col-md-5 mb-3 pb-3 left-section">
-                <h3 class="text-uppercase text-center">Current Penalty Cost Per Day</h3>
-                <?php 
-                    $currentcost = "SELECT cost 
-                    FROM penalty_cost 
-                    ORDER BY penaltyID DESC
-                    LIMIT 1";
-
-                    $costresult = mysqli_query($conn, $currentcost);
-
-                    if ($costresult && mysqli_num_rows($costresult) > 0) {
-                        $currow = mysqli_fetch_assoc($costresult);
-                        $latestCost = $currow['cost'];
-                    }
-
-                    echo"<h2 class='text-center text-bold'>₱$latestCost</h2>";
-                ?>
-
-                <div class="col-md-5 pt-3">
-                    <label for="title">Update Penalty Cost Per Day (₱)</label>
-                    <div class="input-group">
-                        <span class="input-group-text">₱</span>
-                        <input type="number" class="form-control mb-2 mt-1" value="" name="cost" placeholder="00.00" min="0" step="0.01" required>
-                    </div>
-                    <div class="mt-2">
-                        <button type='submit' class='btn btn-success py-2' onclick='return confirmReturn()' id='upd' name='upd'><b>UPDATE</b></button>
-                    </div>
+        <div class="container pt-5">
+    
+            <div class="row pt-3"></div>
+    
+            <div class="row mb-2">
+                <div class="col">
+                    <h1 class="mt-2 mb-3 text-uppercase">Penalty cost</h1>
                 </div>
             </div>
-            </form>
-
-                <div class="col-md-7 mb-5 right-section">
-                    <h3 class="text-uppercase text-center">Cost History</h3>
-                    <div class="row">
-                        <div>
-                            <?php
-                            $result = mysqli_query($conn, "SELECT name, cost, date FROM penalty_cost pc
-                            JOIN lib_acc la ON pc.librarianID = la.librarianID
-                            ORDER BY penaltyID DESC
-                            LIMIT 20;");
-
-                            if (mysqli_num_rows($result) > 0) {
-                                // Display the table if there are borrow records
-                                echo '<table class="table table-borderless">
-                                        <thead>
-                                            <tr>
-                                                <th>Update Date</th>
-                                                <th>Patron Name</th>
-                                                <th>Cost</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>';
-
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    echo '<tr>
-                                            <td>' . $row['date'] . '</td>
-                                            <td>' . $row['name'] . '</td>
-                                            <td>' . $row['cost'] . '</td>
-                                        </tr>';
-                                }
-
-                                echo '</tbody></table>';
-                            } else {
-                                // Display a message if there are no borrow records
-                                echo '<p>No records available.</p>';
-                            }
-                            ?>
+    
+                <form action="" method="post" autocomplete="off">
+            <div class="row">
+                <div class="col-md-5 mb-3 pb-3 left-section">
+                    <h3 class="text-uppercase text-center">Current Penalty Cost Per Day</h3>
+                    <?php 
+                        $currentcost = "SELECT cost 
+                        FROM penalty_cost 
+                        ORDER BY penaltyID DESC
+                        LIMIT 1";
+    
+                        $costresult = mysqli_query($conn, $currentcost);
+    
+                        if ($costresult && mysqli_num_rows($costresult) > 0) {
+                            $currow = mysqli_fetch_assoc($costresult);
+                            $latestCost = $currow['cost'];
+                        }
+    
+                        echo"<h2 class='text-center text-bold'>₱$latestCost</h2>";
+                    ?>
+    
+                    <div class="col-md-5 pt-3">
+                        <label for="title">Update Penalty Cost Per Day (₱)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₱</span>
+                            <input type="number" class="form-control mb-2 mt-1" value="" name="cost" placeholder="00.00" min="0" step="0.01" required>
+                        </div>
+                        <div class="mt-2">
+                            <button type='submit' class='btn btn-success py-2' onclick='return confirmReturn()' id='upd' name='upd'><b>UPDATE</b></button>
                         </div>
                     </div>
                 </div>
+                </form>
+    
+                    <div class="col-md-7 mb-5 right-section">
+                        <h3 class="text-uppercase text-center">Cost History</h3>
+                        <div class="row">
+                            <div>
+                                <?php
+                                $result = mysqli_query($conn, "SELECT name, cost, date FROM penalty_cost pc
+                                JOIN lib_acc la ON pc.librarianID = la.librarianID
+                                ORDER BY penaltyID DESC
+                                LIMIT 20;");
+    
+                                if (mysqli_num_rows($result) > 0) {
+                                    // Display the table if there are borrow records
+                                    echo '<table class="table table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <th>Update Date</th>
+                                                    <th>Patron Name</th>
+                                                    <th>Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>';
+    
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<tr>
+                                                <td>' . $row['date'] . '</td>
+                                                <td>' . $row['name'] . '</td>
+                                                <td>' . $row['cost'] . '</td>
+                                            </tr>';
+                                    }
+    
+                                    echo '</tbody></table>';
+                                } else {
+                                    // Display a message if there are no borrow records
+                                    echo '<p>No records available.</p>';
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+    
         </div>
-
+    
+    
+        </section>
+        </div>
     </div>
 
-
-    </section>
-    </div>
-</div>
+        
+        
 
 
   <!-- Control Sidebar -->
@@ -247,10 +480,10 @@ if(isset($_POST["upd"])){
 <!-- jQuery -->
 
 <script>
-    function confirmReturn() {
-        return confirm('Press "OK" to confirm penalty cost update. Press "Cancel" otherwise.');
-    }
-    </script>
+  function confirmReturn() {
+      return confirm('Press "OK" to confirm penalty cost update. Press "Cancel" otherwise.');
+  }
+</script>
 <script src = "https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
