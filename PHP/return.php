@@ -115,10 +115,26 @@ if(isset($_POST["retpen"])){
                 $totday = ($mnt * 30) + $dys;
                 $totpen = $totday * 10;
 
+                
+                $currentcost = "SELECT cost 
+                FROM penalty_cost 
+                ORDER BY penaltyID DESC
+                LIMIT 1";
+
+                $costresult = mysqli_query($conn, $currentcost);
+
+                if ($costresult && mysqli_num_rows($costresult) > 0) {
+                    $currow = mysqli_fetch_assoc($costresult);
+                    $latestCost = $currow['cost'];
+                }
+
+
+
                 if($row['deadline'] >= $currentDateTime){
                     $borrowID = $row['borrowID'];
                     $returnresult = mysqli_query($conn, "SELECT * FROM return_form WHERE borrowID = $borrowID");
                     $returnrow = mysqli_fetch_assoc($returnresult);
+                
                 echo 
                 "<tr>
                     <td class='px-4 py-2'>
@@ -162,6 +178,7 @@ if(isset($_POST["retpen"])){
                     $returnresult = mysqli_query($conn, "SELECT * FROM return_form WHERE borrowID = $borrowID");
                     $returnrow = mysqli_fetch_assoc($returnresult);
 
+                    $totalcost = $totday * $latestCost;
                     echo 
                     "<tr>
                         <td class='px-4 py-2'>
@@ -175,7 +192,7 @@ if(isset($_POST["retpen"])){
                                     <div class='col-4 text-break mt-1 mb-2'>
                                             <a><b>Deadline:</b></a><br>
                                             <h3 class='text-uppercase text-danger mb-0'>$row[deadline]</h3>
-                                            <h5 class='text-uppercase mb-0 text-danger'>$totday days late</h5>
+                                            <h5 class='text-uppercase mb-0 text-danger'>$totday days late (Php $totalcost)</h5>
                                     </div>
     
                                     <div class='col-3 d-flex justify-content-end align-items-center'>
