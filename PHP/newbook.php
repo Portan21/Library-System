@@ -418,7 +418,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 </div>
                             </div>
 
-                            <button type="submit" name="submit" id="submit" class="btn btn-success btn-lg mt-2"><b>ISSUE BOOK</b></button>
+                            <button type="submit" name="submit" id="submit" class="btn btn-success btn-lg mt-2" onclick="return confirmReturn()"><b>ISSUE BOOK</b></button>
                         </div>
                     </div>
                 </form>
@@ -440,6 +440,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <!-- jQuery -->
 
+<script>
+    function confirmReturn() {
+        return confirm('Press "OK" to confirm the book details. Press "Cancel" otherwise.');
+    }
+</script>
 <script src = "https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>

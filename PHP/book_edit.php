@@ -318,7 +318,7 @@ if(empty($_SESSION["accountID"])){
                         }, 1000); // 1000 milliseconds = 1 second
                         </script>
 
-                        <button type="submit" name="submit" id="submit" class="btn btn-primary btn-lg "><b>EDIT BOOK DETAILS</b></button>
+                        <button type="submit" name="submit" id="submit" class="btn btn-primary btn-lg " onclick="return confirmReturn()"><b>EDIT BOOK DETAILS</b></button>
                     </div>
                 </div>
             </form>
@@ -341,6 +341,11 @@ if(empty($_SESSION["accountID"])){
 <!-- ./wrapper -->
 
 <!-- jQuery -->
+<script>
+    function confirmReturn() {
+        return confirm('Press "OK" to confirm the book details. Press "Cancel" otherwise.');
+    }
+</script>
 <script src = "https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src = "https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>

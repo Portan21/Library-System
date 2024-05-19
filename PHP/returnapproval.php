@@ -522,7 +522,7 @@ $currentDate = new DateTime();
                                         <div class='mr-2'>
                                             <form action='' method='post' autocomplete='off'>
                                             <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>
-                                            <button type='submit' class='btn btn-danger py-2' onclick='return confirmReturn()' id='rej' name='rej'><i class='fas fa-trash'></i></button>
+                                            <button type='submit' class='btn btn-danger py-2' onclick='return rejectReturn()' id='rej' name='rej'><i class='fas fa-trash'></i></button>
                                             </form>
                                         </div>
                                         <div>
@@ -558,7 +558,7 @@ $currentDate = new DateTime();
                                         <div class='mr-2'>
                                             <form action='' method='post' autocomplete='off'>
                                             <input type='hidden' id='borrowID' name='borrowID' value='$row[borrowID]'>
-                                            <button type='submit' class='btn btn-danger py-2' onclick='return confirmReturn()' id='rej' name='rej'><i class='fas fa-trash'></i></button>
+                                            <button type='submit' class='btn btn-danger py-2' onclick='return rejectReturn()' id='rej' name='rej'><i class='fas fa-trash'></i></button>
                                             </form>
                                         </div>
                                         <div>
@@ -597,6 +597,10 @@ $currentDate = new DateTime();
 <script>
     function confirmReturn() {
         return confirm('Press "OK" to confirm the book return. Press "Cancel" otherwise.');
+    }
+    
+    function rejectReturn() {
+        return confirm('Press "OK" to reject the book return. Press "Cancel" otherwise.');
     }
     </script>
     <script src = "https://code.jquery.com/jquery-3.7.0.js"></script>
