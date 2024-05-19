@@ -11,30 +11,118 @@ if(empty($_SESSION["accountID"])){
 if(empty($_SESSION["typeID"])){
   header("Location: login.php");
 }
+
+if(empty($_SESSION["accountID"])){
+    header("Location: login.php");
+}
 else{
-  $id = $_SESSION["accountID"];
-  $result = mysqli_query($conn, "SELECT typeID FROM lib_acc 
-  WHERE librarianID = '$id'");
-  $row = mysqli_fetch_assoc($result);
-  $type = $row['typeID'];
-  if(!($type == "3")){
-    header("location: adminprofile.php");
-  }
+    $id = $_SESSION["accountID"];
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Retrieve the book title from the POST data
-  $bookTitle = $_POST["bookTitle"];
-  $accountid = $_SESSION["accountID"];
-  
-  // Set the $_SESSION["bookTitle"] variable
-  $_SESSION["bookTitle"] = $bookTitle;
-  
-  // Redirect to another page
-  header("Location: book_edit.php");
-  exit; // Make sure to exit after redirecting
-}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["submit"])) {
+        if (isset($_POST['changePasswordCheckbox'])) {
+            $current = mysqli_real_escape_string($conn, $_POST["current_password"]);
+            $change = mysqli_real_escape_string($conn, $_POST["change_password"]);
+            $confirm = mysqli_real_escape_string($conn, $_POST["confirm_password"]);
+            if(!empty($current) & !empty($change) & !empty($confirm)){
+                if(!empty($_SESSION["typeID"])){
+                    $result = mysqli_query($conn, "SELECT password FROM lib_acc WHERE librarianID = '$id'");
+                    $row = mysqli_fetch_assoc($result);
+                    
+                    if(mysqli_num_rows($result) > 0){
+                        if(password_verify($current, $row["password"])){
+                            if($change == $confirm){
+                                if($change == $current){
+                                    echo "<script> alert('New Password Cannot Be Similar With the Current Password.'); </script>";
+                                }
+                                else{
+                                    $hashed_new_password = password_hash($change, PASSWORD_DEFAULT);
 
+                                    $updatequery = "UPDATE lib_acc SET 
+                                    password = '$hashed_new_password'
+                                    WHERE librarianID = '$id';
+                                    ";
+        
+                                    if (mysqli_query($conn, $updatequery)) {
+                                        echo "<script> alert('Account Update Successful'); </script>";
+                                    }
+                    
+                                    //echo "<script> alert('New Password Match'); </script>";
+                                }
+                            }
+                            else{
+                                echo "<script> alert('New Password Does Not Match'); </script>";
+                            }
+                        }
+                        else{
+                            echo "<script> alert('Wrong Current Password'); </script>";
+                        }
+                    }
+
+                }
+                else{
+                    $course = mysqli_real_escape_string($conn, $_POST["course"]);
+
+                    $result = mysqli_query($conn, "SELECT password FROM patron_acc WHERE patronID = '$id'");
+                    $row = mysqli_fetch_assoc($result);
+                    
+                    if(mysqli_num_rows($result) > 0){
+                        if(password_verify($current, $row["password"])){
+                            if($change == $confirm){
+                                if($change == $current){
+                                    echo "<script> alert('New Password Cannot Be Similar With the Current Password.'); </script>";
+                                }
+                                else{
+                                    $hashed_new_password = password_hash($change, PASSWORD_DEFAULT);
+
+                                    $updatequery = "UPDATE patron_acc SET 
+                                    course = '$course',
+                                    password = '$hashed_new_password'
+                                    WHERE patronID = '$id';
+                                    ";
+        
+                                    if (mysqli_query($conn, $updatequery)) {
+                                        echo "<script> alert('Account Update Successful'); </script>";
+                                    }
+                    
+                                    //echo "<script> alert('New Password Match'); </script>";
+                                }
+                            }
+                            else{
+                                echo "<script> alert('New Password Does Not Match'); </script>";
+                            }
+                        }
+                        else{
+                            echo "<script> alert('Wrong Current Password'); </script>";
+                        }
+                    }
+
+                }
+            }
+            else{
+                echo "<script> alert('Fill All Information'); </script>";
+            }
+        }
+        else{
+            if(empty($_SESSION["typeID"])){
+                $course = mysqli_real_escape_string($conn, $_POST["course"]);
+                
+                $updatequery = "UPDATE patron_acc SET 
+                course = '$course'
+                WHERE patronID = '$id';
+                ";
+
+                if (mysqli_query($conn, $updatequery)) {
+                    echo "<script> alert('Course Update Successful'); </script>";
+                }
+
+                //echo "<script> alert('$course'); </script>";
+            }
+        }
+
+    }
+}
 ?>
 <head>
   <meta charset="utf-8">
@@ -252,8 +340,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </li>
                 </ul>
               </li>
-              <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
                   <p>
                     Report Management
                     <i class="right fas fa-angle-left"></i>
@@ -279,7 +367,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="./returnpenaltyrecords-admin.php" class="nav-link active">
+                      <a href="./returnpenaltyrecords-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Returned Books (Penalty)</p>
                       </a>
@@ -305,8 +393,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </li>';}
             else {
               echo'
-              <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
                   <p>
                     Library Operation Management
                     <i class="right fas fa-angle-left"></i>
@@ -314,7 +402,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a href="#" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Catalog</p>
                     </a>
@@ -366,38 +454,91 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-        <div class = "container py-4 px-4">
-        <table id="example" class="content-table" tyle="width:100%">
-        <thead>
-          <tr>
-            <th>Book Title</th>
-            <th>Author</th>
-            <th>Availability</th>
-          </tr>
-        </thead>
-        <tbody>
-		<?php
-        $result = mysqli_query($conn, "SELECT bookID, book_name,author,availabilitytype,description FROM book b
-        INNER JOIN availability_type a ON b.availability = a.availabilityID 
-        ORDER BY bookID ASC");
-        while($row = mysqli_fetch_assoc($result)){
-          $bookName = htmlspecialchars($row['book_name']);
-          $description = htmlspecialchars($row['description']);
-          echo "<tr>
-              <td class='px-4 py-2 text-center border'>
-                <form id='bookForm' method='post' action='' style='display: inline;'>
-                <input type='hidden' name='bookTitle' value='$row[bookID]'>
-                <button type='submit' class='book-button' style='border: none; background-color: transparent; cursor: pointer; text-decoration: underline; color: blue; id='bookButton''>$row[book_name]</button>
-                </form>
-              </td>
-              <td class='px-4 py-2 text-center border'>$row[author]</td>
-              <td class='px-4 py-2 text-center border'>$row[availabilitytype]</td>
-          </tr>";
-          
-         }
-         ?>
-        </tbody>
-      </table>
+        <div class = "container pb-4 px-4">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 pt-5 mt-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="text-uppercase">Account Management</h1>
+                        <form action="" method="post" autocomplete="off">
+                            <div class="mb-2 mt-2">
+                                <label for="exampleInputEmail1" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $_SESSION['email']; ?>" disabled>
+                            </div>
+
+                            <div class="mb-2 mt-2">
+                                <label for="exampleInputEmail1" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp" value="<?php echo $_SESSION['name']; ?>" disabled>
+                            </div>
+                            <?php
+                            if(!empty($_SESSION["typeID"])){
+                                if($_SESSION["typeID"] == 1){
+                                echo"
+                                <div class='mb-2 mt-2'>
+                                    <label for='exampleInputEmail1' class='form-label'>Account Type</label>
+                                    <input type='text' class='form-control' aria-describedby='emailHelp' value='Admin' disabled>
+                                </div>";
+                                }
+                                else if($_SESSION["typeID"] == 2){
+                                    echo"
+                                    <div class='mb-2 mt-2'>
+                                        <label for='exampleInputEmail1' class='form-label'>Account Type</label>
+                                        <input type='text' class='form-control' aria-describedby='emailHelp' value='Head Librarian' disabled>
+                                    </div>";
+                                }
+                                else{
+                                    echo"
+                                    <div class='mb-2 mt-2'>
+                                        <label for='exampleInputEmail1' class='form-label'>Account Type</label>
+                                        <input type='text' class='form-control' aria-describedby='emailHelp' value='Librarian' disabled>
+                                    </div>";
+                                }
+                            }
+                            else{
+                                $result = mysqli_query($conn, "SELECT course FROM patron_acc WHERE patronID = '$id'");
+                
+                                while($row = mysqli_fetch_assoc($result)){
+                                    $acccourse = $row['course'];
+                                }
+                                echo"
+                                <div class='mb-2 mt-2'>
+                                    <label for='exampleInputEmail1' class='form-label'>Course</label>
+                                    <input type='text' class='form-control' id='course' name='course' aria-describedby='emailHelp' value='$acccourse'  required>
+                                </div>";
+                            }
+                            ?>
+
+                            <!-- Existing form fields... -->
+                            <div class=" form-check">
+                                <input type="checkbox" class="form-check-input" id="changePasswordCheckbox" name="changePasswordCheckbox">
+                                <label class="form-check-label" for="changePasswordCheckbox">Change Password</label>
+                            </div>
+
+                            <!-- Additional password fields initially hidden -->
+                            <div id="passwordFields" style="display:none">
+                                <div class="mb-2 mt-2">
+                                    <label for="exampleInputPassword1" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="current_password" name="current_password">
+                                </div>
+                                <div class="mb-2 mt-2">
+                                    <label for="exampleInputPassword1" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="change_password" name="change_password">
+                                </div>
+                                <div class="mb-2 mt-2">
+                                    <label for="exampleInputPassword2" class="form-label">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                                </div>
+                            </div>
+
+                            <button type="submit" name="submit" id="submit" class="btn btn-success mt-4">Update Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
     </div>
 </div>
 
@@ -418,6 +559,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src = "../JavaScript/changetype.js"></script>
     <script src = "../JavaScript/app2.js"></script>
     <script src="dist/js/adminlte.js"></script>
+    <script>
+        // Use jQuery to handle checkbox change event
+        $(document).ready(function () {
+            $('#changePasswordCheckbox').change(function () {
+                // Show/hide password fields based on checkbox state
+                $('#passwordFields').toggle(this.checked);
+            });
+        });
+    </script>
 
 </body>
 </html>

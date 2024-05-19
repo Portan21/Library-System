@@ -207,8 +207,8 @@ if(isset($_POST["regis"])){
             $type = $row['typeID'];
             if($type == "1"){
               echo'
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Account Management
                     <i class="right fas fa-angle-left"></i>
@@ -228,7 +228,7 @@ if(isset($_POST["regis"])){
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link active">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add an Account</p>
                     </a>
@@ -278,8 +278,8 @@ if(isset($_POST["regis"])){
               </li>';}
             else if($type == "2"){ //!!!!!!!!!! CANNOT DISPLAY ADMIN ACCOUNT AND PATRON ACCOUNT?????????????!!!!!!!!!!!!!!
               echo'
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Account Management
                     <i class="right fas fa-angle-left"></i>
@@ -299,7 +299,7 @@ if(isset($_POST["regis"])){
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link active">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add an Account</p>
                     </a>
@@ -426,11 +426,11 @@ if(isset($_POST["regis"])){
     <section class="content mx-2">
         
         <div class="container">
-            <div class="row pt-5">
-                <h1 class="mt-2 mb-3 text-uppercase">Account creation</h1>
+            <div class="row pt-3">
+                <h1 class="mt-1 mb-3 text-uppercase">Account creation</h1>
             </div>
 
-            <div class="row mt-2 mb-2">
+            <div class="row mt-1 mb-2">
                 <div class="col mt-2">
                     <h2 class=" text-uppercase">Staff Account</h2>
                 </div>

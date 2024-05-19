@@ -4,7 +4,7 @@
 }
 
 .reader{
-    padding: 2%;
+    padding: 10px;
 }
 
 .reader-form{
@@ -16,6 +16,10 @@
     height: 100%;
     width: 100%;
     margin-top: 3%;
+}
+
+nav.main-header.navbar.navbar-expand{
+    color: transparent;
 }
 
 
