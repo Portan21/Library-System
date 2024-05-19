@@ -14,6 +14,16 @@ else{
 if(empty($_SESSION["typeID"])){
   header("Location: login.php");
 }
+else{
+  $id = $_SESSION["accountID"];
+  $result = mysqli_query($conn, "SELECT typeID FROM lib_acc 
+  WHERE librarianID = '$id'");
+  $row = mysqli_fetch_assoc($result);
+  $type = $row['typeID'];
+  if(!($type == "3")){
+      header("location: adminprofile.php");
+  }
+}
 
 
 date_default_timezone_set('Asia/Manila'); // Set the time zone to Philippines
@@ -312,8 +322,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
               </li>';}
             else {
               echo'
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Library Operation Management
                     <i class="right fas fa-angle-left"></i>
@@ -327,7 +337,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link active">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add Book</p>
                     </a>
@@ -373,10 +383,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <section class="content">
         
         <div class="container">
-            <div class="row pt-3"></div>
+            <div class="row pt-1"></div>
 
             <div class="row mt-4 mb-2">
-                <div class="col mt-3">
+                <div class="col mt-1">
                     <a href="newcatalog.php" class="mt-2 text-decoration-none text-uppercase">< VIEW Catalog list</a>
                     
                     <h1 class="mt-1 text-uppercase">ISSUE BOOK</h1>

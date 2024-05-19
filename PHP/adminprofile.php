@@ -365,10 +365,10 @@ $currentDate = new DateTime();
                     <div class="row">
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <p class='px-4 py-2 font-weight-bold text-wrap'>Name</p>
                                  </div>
-                                 <div class="col-6">
+                                 <div class="col-8">
                                     <?php
                                         if(!empty($_SESSION["typeID"])){
                                             $accID = $_SESSION["accountID"];
@@ -384,10 +384,10 @@ $currentDate = new DateTime();
                                  </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <p class='px-4 py-2 font-weight-bold text-wrap'>Email</p>
                                  </div>
-                                <div class="col-6">
+                                <div class="col-8">
                                     <?php
                                         if(!empty($_SESSION["typeID"])){
                                             $accID = $_SESSION["accountID"];
@@ -403,10 +403,10 @@ $currentDate = new DateTime();
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <p class='px-4 py-2 font-weight-bold text-wrap'>Account Type</p>
                                  </div>
-                                <div class="col-6">
+                                <div class="col-8">
                                     <?php
                                         if(!empty($_SESSION["typeID"])){
                                             $accID = $_SESSION["accountID"];
@@ -421,7 +421,7 @@ $currentDate = new DateTime();
                                     ?>
                                  </div>
                             </div>
-                            <div class="col-lg-12">
+                            <div class="col-lg-12 pb-2">
                                 <a href="accountedit.php"><input class="edit-button btn btn-secondary pt-1 pb-1 pl-1 pr-1" type="submit" value="Change Password"></a>
                             </div>
                         </div>
