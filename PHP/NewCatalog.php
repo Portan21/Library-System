@@ -134,12 +134,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
       </div>
 
-     <!-- Sidebar Menu -->
-     <nav class="mt-2">
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-               <?php
+
+        <?php
           if(!empty($_SESSION["typeID"])){
             $id = $_SESSION["accountID"];
             $result = mysqli_query($conn, "SELECT typeID FROM lib_acc WHERE librarianID = '$id'");
@@ -168,15 +167,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="createaccount.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add an Account</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Edit an Account</p>
                     </a>
                   </li>
                 </ul>
@@ -189,12 +182,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                      <a href="./librarianattendance-admin.php" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Librarian Attendance</p>
-                      </a>
-                    </li>
                     <li class="nav-item">
                       <a href="./patronattendance-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -227,45 +214,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="./librarianprofiles-admin.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Librarian Profiles</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./patronprofiles-admin.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Patron Profiles</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="createaccount.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add an Account</p>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Edit an Account</p>
-                    </a>
-                  </li>
                 </ul>
               </li>
-              <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
                   <p>
                     Report Management
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                      <a href="./librarianattendance-admin.php" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Librarian Attendance</p>
-                      </a>
-                    </li>
                     <li class="nav-item">
                       <a href="./patronattendance-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -279,7 +242,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="./returnpenaltyrecords-admin.php" class="nav-link active">
+                      <a href="./returnpenaltyrecords-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Returned Books (Penalty)</p>
                       </a>
@@ -296,7 +259,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="penaltycost.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Update Penalty Cost</p>
                     </a>
@@ -314,25 +277,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a href="NewCatalog.php" class="nav-link active">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Catalog</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="newbook.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add Book</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                    <a href="./NewRequest.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Borrow Requests</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="./librarianprofiles-admin.php" class="nav-link">
+                    <a href="returnapproval.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Return Requests</p>
                     </a>
@@ -350,6 +313,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           ?>
           
         </ul>
+         
        
       </nav>
       <!-- /.sidebar-menu -->

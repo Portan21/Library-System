@@ -230,6 +230,7 @@ $currentDate = new DateTime();
         </div>
       </div>
 
+      
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -263,15 +264,9 @@ $currentDate = new DateTime();
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="createaccount.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add an Account</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Edit an Account</p>
                     </a>
                   </li>
                 </ul>
@@ -284,12 +279,6 @@ $currentDate = new DateTime();
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                      <a href="./librarianattendance-admin.php" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Librarian Attendance</p>
-                      </a>
-                    </li>
                     <li class="nav-item">
                       <a href="./patronattendance-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -322,27 +311,9 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="./librarianprofiles-admin.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Librarian Profiles</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./patronprofiles-admin.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Patron Profiles</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="createaccount.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add an Account</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Edit an Account</p>
                     </a>
                   </li>
                 </ul>
@@ -355,12 +326,6 @@ $currentDate = new DateTime();
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                      <a href="./librarianattendance-admin.php" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Librarian Attendance</p>
-                      </a>
-                    </li>
                     <li class="nav-item">
                       <a href="./patronattendance-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -391,7 +356,7 @@ $currentDate = new DateTime();
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="penaltycost.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Update Penalty Cost</p>
                     </a>
@@ -415,13 +380,13 @@ $currentDate = new DateTime();
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="newbook.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add Book</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="Newrequest.php" class="nav-link">
+                    <a href="./NewRequest.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Borrow Requests</p>
                     </a>
