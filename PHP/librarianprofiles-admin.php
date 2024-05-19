@@ -383,7 +383,7 @@ $currentDate = new DateTime();
                 FROM lib_acc acc
                 INNER JOIN account_type acct ON acc.typeID = acct.type_ID;");
                 while($row = mysqli_fetch_assoc($result)){
-                    if($row['nametype'] != "Admin" && $row['status'] == 1 && $row['librarianID'] != $accID){
+                    if($row['nametype'] != "Admin" && $row['status'] == 1 && $row['nametype'] != "Head Librarian"){
                         echo "<tr>
                             <td class='px-4 py-2 text-center'>$row[librarianID]</td>
                             <td class='px-4 py-2 text-center'>$row[name]</td>
@@ -392,7 +392,7 @@ $currentDate = new DateTime();
                             <td class='px-4 py-2 text-center'><button id='statusButton$row[librarianID]' onmouseover='hover($row[librarianID])' onmouseout='hoverOut($row[librarianID])' onclick='changeStatus($row[librarianID])' class='select btn btn-success'>Enabled</button></td>
                         </tr>";
                     }
-                    else if ($row['nametype'] != "Admin" && $row['status'] == 2 && $row['librarianID'] != $accID){
+                    else if ($row['nametype'] != "Admin" && $row['status'] == 2 && $row['nametype'] != "Head Librarian"){
                         echo "<tr>
                             <td class='px-4 py-2 text-center'>$row[librarianID]</td>
                             <td class='px-4 py-2 text-center'>$row[name]</td>
@@ -401,7 +401,7 @@ $currentDate = new DateTime();
                             <td class='px-4 py-2 text-center'><button id='statusButton$row[librarianID]' onmouseover='hover($row[librarianID])' onmouseout='hoverOut($row[librarianID])' onclick='changeStatus($row[librarianID])' class='select btn btn-danger'>Disabled</button></td>
                         </tr>";
                     }
-                    else if($row['nametype'] != "Admin" && $row['status'] == 1 && $row['librarianID'] != $accID){
+                    else if($row['nametype'] != "Admin" && $row['status'] == 1 && $row['nametype'] != "Head Librarian"){
                         echo "<tr>
                             <td class='px-4 py-2 text-center'>$row[librarianID]</td>
                             <td class='px-4 py-2 text-center'>$row[name]</td>
@@ -410,7 +410,7 @@ $currentDate = new DateTime();
                             <td class='px-4 py-2 text-center'><button id='statusButton$row[librarianID]' class='select btn btn-success'>Enabled</button></td>
                         </tr>";
                     }
-                    else if($row['nametype'] != "Admin" && $row['status'] == 2 && $row['librarianID'] != $accID){
+                    else if($row['nametype'] != "Admin" && $row['status'] == 2 && $row['nametype'] != "Head Librarian"){
                         echo "<tr>
                             <td class='px-4 py-2 text-center'>$row[librarianID]</td>
                             <td class='px-4 py-2 text-center'>$row[name]</td>
