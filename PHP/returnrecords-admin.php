@@ -208,8 +208,8 @@ $currentDate = new DateTime();
                   </li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Report Management
                     <i class="right fas fa-angle-left"></i>
@@ -223,7 +223,7 @@ $currentDate = new DateTime();
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="./returnrecords-admin.php" class="nav-link">
+                      <a href="./returnrecords-admin.php" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Returned Books</p>
                       </a>

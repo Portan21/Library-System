@@ -267,8 +267,8 @@ if(isset($_POST["regis"])){
               </li>';}
             else if($type == "2"){ //!!!!!!!!!! CANNOT DISPLAY ADMIN ACCOUNT AND PATRON ACCOUNT?????????????!!!!!!!!!!!!!!
               echo'
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
                   <p>
                     Account Management
                     <i class="right fas fa-angle-left"></i>
@@ -276,7 +276,7 @@ if(isset($_POST["regis"])){
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="createaccount.php" class="nav-link">
+                    <a href="createaccount.php" class="nav-link active">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Add an Account</p>
                     </a>
