@@ -153,28 +153,18 @@ $currentDate = new DateTime();
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="createaccount.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Add an Account</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <p>
-                    Report Management
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
                       <a href="./patronattendance-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Patron Attendance</p>
                       </a>
                     </li>
-                    <li class="nav-item">
+                  <li class="nav-item">
+                    <a href="createaccount.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add an Account</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
                       <a href="./returnrecords-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Returned Books</p>
@@ -186,10 +176,89 @@ $currentDate = new DateTime();
                         <p>Returned Books (Penalty)</p>
                       </a>
                     </li>
+                </ul>
+              </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <p>
+                      Report Management
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="patronborrow-print.php" target="_blank" class="nav-link">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Total Borrows of Patron</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="courseborrow-print.php" target="_blank" class="nav-link">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Total Borrows Per Course</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                      <a href="bookborrow-print.php" target="_blank" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Total Borrows Per Book</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="patronvisit-print.php" target="_blank" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Total Visits of Patron</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="coursevisit-print.php" target="_blank" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Total Visits Per Course</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="totalborrow-print.php" target="_blank" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Total Book Request Approval Of Librarian</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="totalreturn-print.php" target="_blank" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Total Book Return Approval Of Librarian</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="totalavailablebooks-print.php" target="_blank" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Total Available Books</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="totalarchivedbooks-print.php" target="_blank" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Total Archived Books</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="patronpenaltytotal-print.php" target="_blank" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Summary Of Penalty Per Patron</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="penaltytotal-print.php" target="_blank" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Summary Of Penalties</p>
+                      </a>
+                    </li>
+                    </li>
+                  </ul>
+                </li>
                   </li>
                 </ul>
               </li>';}
-            else if($type == "2"){ //!!!!!!!!!! CANNOT DISPLAY ADMIN ACCOUNT AND PATRON ACCOUNT?????????????!!!!!!!!!!!!!!
+            else if($type == "2"){
               echo'
               <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -205,17 +274,7 @@ $currentDate = new DateTime();
                       <p>Add an Account</p>
                     </a>
                   </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <p>
-                    Report Management
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
+                  <li class="nav-item">
                       <a href="./patronattendance-admin.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Patron Attendance</p>
@@ -233,6 +292,82 @@ $currentDate = new DateTime();
                         <p>Returned Books (Penalty)</p>
                       </a>
                     </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <p>
+                    Report Management
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="patronborrow-print.php" target="_blank" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Total Borrows of Patron</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="courseborrow-print.php" target="_blank" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Total Borrows Per Course</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="bookborrow-print.php" target="_blank" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Total Borrows Per Book</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="patronvisit-print.php" target="_blank" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Total Visits of Patron</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="coursevisit-print.php" target="_blank" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Total Visits Per Course</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="totalborrow-print.php" target="_blank" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Total Book Request Approval Of Librarian</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="totalreturn-print.php" target="_blank" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Total Book Return Approval Of Librarian</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="totalavailablebooks-print.php" target="_blank" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Total Available Books</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="totalarchivedbooks-print.php" target="_blank" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Total Archived Books</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="patronpenaltytotal-print.php" target="_blank" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Summary Of Penalty Per Patron</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="penaltytotal-print.php" target="_blank" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Summary Of Penalties</p>
+                    </a>
+                  </li>
                   </li>
                 </ul>
               </li>
@@ -386,7 +521,7 @@ $currentDate = new DateTime();
                                  </div>
                             </div>
                             <div class="col-lg-12 pb-2">
-                                <a href="accountedit.php"><input class="edit-button btn btn-secondary pt-1 pb-1 pl-1 pr-1" type="submit" value="Change Password"></a>
+                                <a href="newaccountedit.php"><input class="edit-button btn btn-secondary pt-1 pb-1 pl-1 pr-1" type="submit" value="Change Password"></a>
                             </div>
                         </div>
                     </div>

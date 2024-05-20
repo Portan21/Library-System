@@ -42,7 +42,7 @@ $result = mysqli_query($conn, "SELECT requestID, bookID FROM book_request WHERE 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Catalog</title>
+  <title>Borrow Request</title>
   <link rel="stylesheet" href="../CSS/index.css">
   <link rel="stylesheet" href="../CSS/approval.css">
   <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">

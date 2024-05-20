@@ -27,11 +27,12 @@ else{
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/bootstrap.min.css">
     <link rel="stylesheet" href="../CSS/qrcodereader.css">
+    <link rel="icon" href="../Pictures/logo-header.png" type="image/ico">
     <script defer src="../JavaScript/bootstrap.bundle.min.js"></script>
     <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="../JavaScript/html5-qrcode-min.js"></script>
     <script defer src="../JavaScript/qrcodeReader.js"></script>
-    <title>QRReader</title>
+    <title>QR Reader</title>
 </head>
 <body>
     <div class="container-fluid">

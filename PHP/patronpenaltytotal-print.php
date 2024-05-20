@@ -25,7 +25,7 @@ $currentDate = new DateTime();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>REPORTS | Summary Of Penalty Per Patron</title>
   <link rel="stylesheet" href="../CSS/print.css">
   <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
   <link rel = "stylesheet" href = "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"> 
@@ -194,13 +194,13 @@ $currentDate = new DateTime();
                       </tr>
                       </thead>
                       <tbody>";
-                while($row = mysqli_fetch_assoc($result)){
-                    echo "<tr>
-                            <td class='px-4 py-2 text-center'>$row[count]</td>
-                            <td class='px-4 py-2 text-center'>$row[name]</td>
-                            <td class='px-4 py-2 text-center'>$row[penalty]</td>
-                        </tr>";
-                }
+            while($row = mysqli_fetch_assoc($result)){
+                echo "<tr>
+                        <td class='px-4 py-2 text-center'>$row[count]</td>
+                        <td class='px-4 py-2 text-center'>$row[name]</td>
+                        <td class='px-4 py-2 text-center'>$row[penalty]</td>
+                    </tr>";
+            }
           }
     }
     ?>

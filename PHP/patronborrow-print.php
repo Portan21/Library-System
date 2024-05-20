@@ -25,7 +25,7 @@ $currentDate = new DateTime();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>REPORTS | Total Borrows of Patron</title>
   <link rel="stylesheet" href="../CSS/print.css">
   <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
   <link rel = "stylesheet" href = "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"> 
@@ -66,7 +66,7 @@ $currentDate = new DateTime();
         <div class = "container py-4 px-4">
     <div class ="row">
     <div class="col-8">
-    <h3 class="mb-4 mt-3 text-uppercase">Total Books Borrowed Per Person<button class="select btn btn-primary" onClick="window.print()"><a class="nav-link" href="#">Print</a></button></h3>
+    <h3 class="mb-4 mt-3 text-uppercase">Total Books Borrowed Per Patron<button class="select btn btn-primary" onClick="window.print()"><a class="nav-link" href="#">Print</a></button></h3>
     </div>
     <div class="col-4">
         <?php
