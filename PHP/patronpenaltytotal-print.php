@@ -157,7 +157,7 @@ $currentDate = new DateTime();
                           <tr>
                           <th class='px-4 py-2 text-center'>Penalty Count</th>
                           <th class='px-4 py-2 text-center'>Patron Name</th>
-                          <th class='px-4 py-2 text-center'>Total Penalty</th>
+                          <th class='px-4 py-2 text-center'>Total Penalty Amount</th>
                       </tr>
                       </thead>
                       <tbody>";
@@ -190,7 +190,7 @@ $currentDate = new DateTime();
                           <tr>
                           <th class='px-4 py-2 text-center'>Penalty Count</th>
                           <th class='px-4 py-2 text-center'>Patron Name</th>
-                          <th class='px-4 py-2 text-center'>Total Penalty</th>
+                          <th class='px-4 py-2 text-center'>Total Penalty Amount</th>
                       </tr>
                       </thead>
                       <tbody>";

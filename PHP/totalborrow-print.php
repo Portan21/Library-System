@@ -155,7 +155,7 @@ $currentDate = new DateTime();
                       <thead>
                           <tr>
                           <th class='px-4 py-2 text-center'>Total Borrow Approval</th>
-                          <th class='px-4 py-2 text-center'>Name</th>
+                          <th class='px-4 py-2 text-center'>Librarian Name</th>
                       </tr>
                       </thead>
                       <tbody>";
@@ -185,7 +185,7 @@ $currentDate = new DateTime();
                       <thead>
                           <tr>
                           <th class='px-4 py-2 text-center'>Total Borrow Approval</th>
-                          <th class='px-4 py-2 text-center'>Name</th>
+                          <th class='px-4 py-2 text-center'>Librarian Name</th>
                       </tr>
                       </thead>
                       <tbody>";

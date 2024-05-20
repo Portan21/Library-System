@@ -152,7 +152,7 @@ $currentDate = new DateTime();
                       <thead>
                           <tr>
                           <th class='px-4 py-2 text-center'></th>
-                          <th class='px-4 py-2 text-center'>Total Penalty</th>
+                          <th class='px-4 py-2 text-center'>Total Penalty Amount</th>
                       </tr>
                       </thead>
                       <tbody>";
@@ -184,7 +184,7 @@ $currentDate = new DateTime();
                       <tbody>";
                 while($row = mysqli_fetch_assoc($result)){
                     echo "<tr>
-                            <td class='px-4 py-2 text-center'>Total Penalty</td>
+                            <td class='px-4 py-2 text-center'>Total Penalty Amount</td>
                             <td class='px-4 py-2 text-center'>$row[total]</td>
                         </tr>";
                 }

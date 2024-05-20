@@ -61,6 +61,7 @@ if(isset($_POST["login"])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/bootstrap.min.css">
     <link rel="stylesheet" href="../CSS/login.css">
+    <link rel="icon" href="../Pictures/logo-header.png" type="image/ico">
     <script defer src="../JavaScript/bootstrap.bundle.min.js"></script>
     <script defer src="../JavaScript/javascript.js"></script>
     <title>Login</title>
