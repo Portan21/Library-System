@@ -57,6 +57,7 @@ if(isset($_POST["ret"])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/bootstrap.min.css">
     <link rel="stylesheet" href="../CSS/profile.css">
+    <link rel="icon" href="../Pictures/logo-header.png" type="image/ico">
     <script defer src="../JavaScript/bootstrap.bundle.min.js"></script>
     <script defer src="../JavaScript/profile.js"></script>
     <title>Profile</title>

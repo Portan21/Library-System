@@ -59,6 +59,7 @@ while($rowbdate = mysqli_fetch_assoc($bdateres)){
     <link rel="stylesheet" href="../CSS/index.css">
     <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel = "stylesheet" href = "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"> 
+    <link rel="icon" href="../Pictures/logo-header.png" type="image/ico"> 
 </head>
 <body>
 <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary shadow">
@@ -71,7 +72,7 @@ while($rowbdate = mysqli_fetch_assoc($bdateres)){
         <ul class="navbar-nav mb-lg-0 ms-auto">
 
             <li class="nav-item">
-            <a class="nav-link" href="catalogs.php">Catalog</a>
+            <a class="nav-link" href="catalogs.php">CATALOG</a>
             </li>
 	    <?php
 	    if(!empty($_SESSION["typeID"])){
@@ -94,13 +95,16 @@ while($rowbdate = mysqli_fetch_assoc($bdateres)){
 	    }
 
 	    ?>
-
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="profile.php">Profile</a>
+                <a class="nav-link" href="return.php">RETURN</a>
             </li>
 
             <li class="nav-item">
-            <a class="nav-link" href="logout.php">Logout</a>
+            <a class="nav-link active" aria-current="page" href="profile.php">PROFILE</a>
+            </li>
+
+            <li class="nav-item">
+            <a class="nav-link" href="logout.php">LOGOUT</a>
             </li>
         </ul>
     </div>

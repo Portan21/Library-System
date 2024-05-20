@@ -55,6 +55,7 @@ if(isset($_POST["retpen"])){
     <link rel="stylesheet" href="../CSS/approval.css">
     <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel = "stylesheet" href = "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">  
+    <link rel="icon" href="../Pictures/logo-header.png" type="image/ico">
 </head>
 <body>
 <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary shadow px-5">
