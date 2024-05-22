@@ -4,6 +4,15 @@
 
 require 'config.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+//Import PHPMailer classes into the global namespace
+//These must be at the top of your script, not inside a function
+require 'PHPMailer\src\PHPMailer.php';
+require 'PHPMailer\src\SMTP.php';
+require 'PHPMailer\src\Exception.php';
+
 if(empty($_SESSION["accountID"])){
   header("Location: login.php");
 }
@@ -33,18 +42,63 @@ $currentDate = new DateTime();
 
 
 if(isset($_POST["ret"])){
-    $borrowID = $_POST["borrowID"];
+  $mail = new PHPMailer(true);
+  $borrowID = $_POST["borrowID"];
 
-    $bdateres = mysqli_query($conn, "SELECT borrow_date FROM borrowed_book WHERE borrowID = $borrowID");
-    while($rowbdate = mysqli_fetch_assoc($bdateres)){
-        $borrowdate = new DateTime($rowbdate["borrow_date"]);
-        
-        $insquery = "INSERT INTO returned_book (bookID, patronID, librarianID, borrow_date, return_date, penalty_paid)
-        SELECT bookID, patronID, $id, borrow_date, '$currentDateTime', '0.00'
-        FROM borrowed_book
-        WHERE borrowID = $borrowID";
-        
-        if(mysqli_query($conn, $insquery)){
+  $bdateres = mysqli_query($conn, "SELECT borrow_date FROM borrowed_book WHERE borrowID = $borrowID");
+  while($rowbdate = mysqli_fetch_assoc($bdateres)){
+      $borrowdate = new DateTime($rowbdate["borrow_date"]);
+      
+      $emailquery = "SELECT email, book_name, receipt_number FROM return_form rf
+      INNER JOIN borrowed_book bb
+      ON rf.borrowID = bb.borrowID
+      INNER JOIN patron_acc pa
+      ON pa.patronID = bb.patronID
+      INNER JOIN book b
+      ON bb.bookID = b.bookID
+      WHERE rf.borrowID = $borrowID";
+
+      if(mysqli_query($conn, $emailquery)){
+        $emailresult = mysqli_query($conn, $emailquery);
+        $emailrow = mysqli_fetch_assoc($emailresult);
+        $email = trim($emailrow['email']);
+        $book = $emailrow['book_name'];
+        $receipt = $emailrow['receipt_number'];
+
+        $message = "Your request to return the book <b>'$book'</b> has been approved.";
+
+        //dtldbwzroixdlthq
+        try {
+          //Server settings
+          $mail->isSMTP();                                            //Send using SMTP
+          $mail->SMTPAuth   = true;
+          $mail->SMTPSecure = 'ssl';
+          $mail->Host       = 'smtp.gmail.com';
+          $mail->Port       = 465;
+          $mail->Username   = 'adamson.scribe@gmail.com';                     //SMTP username
+          $mail->Password   = 'qfwzlywxozzclfun';                               //SMTP password
+
+          //Recipients
+          $mail->setFrom('adamson.scribe@gmail.com', 'Adamson SCRIBE');
+          $mail->addAddress($email);     //Add a recipient
+
+
+          //Content
+          $mail->isHTML(true);                                  //Set email format to HTML
+          $mail->Subject = 'Book Return Successful | SCRIBE';
+          $mail->Body    = $message;
+
+
+          $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+          $mail->send();
+
+          $insquery = "INSERT INTO returned_book (bookID, patronID, librarianID, borrow_date, return_date, penalty_paid)
+          SELECT bookID, patronID, $id, borrow_date, '$currentDateTime', '0.00'
+          FROM borrowed_book
+          WHERE borrowID = $borrowID";
+
+          if(mysqli_query($conn, $insquery)){
             // Insert was successful, now update the book availability
             $updatequery = "UPDATE book SET availability = '1' WHERE bookID IN (SELECT bookID FROM borrowed_book WHERE borrowID = $borrowID)";
             
@@ -66,12 +120,16 @@ if(isset($_POST["ret"])){
                 echo "<script>alert('Update error');</script>";
             }
             
+      }
+        } catch (Exception $e) {
+          echo "<script> alert('Message could not be sent. Mailer Error: {$mail->ErrorInfo}')</script>";
         }
+        }
+      }
     }
 
-}
-
 if(isset($_POST["retpen"])){
+    $mail = new PHPMailer(true);
     $borrowID = $_POST["borrowID"];
     $receiptnum = $_POST["receipt"];
     $penaltycost = $_POST["cost"];
@@ -80,14 +138,60 @@ if(isset($_POST["retpen"])){
 
     $bdateres = mysqli_query($conn, "SELECT borrow_date FROM borrowed_book WHERE borrowID = $borrowID");
     while($rowbdate = mysqli_fetch_assoc($bdateres)){
-        $borrowdate = new DateTime($rowbdate["borrow_date"]);
-        
-        $insquery = "INSERT INTO returned_book (bookID, patronID, librarianID, borrow_date, return_date, penalty_paid, receipt_number)
-        SELECT bookID, patronID, $id, borrow_date, '$currentDateTime', '$penaltycost', '$receiptnum'
-        FROM borrowed_book
-        WHERE borrowID = $borrowID";
-        
-        if(mysqli_query($conn, $insquery)){
+
+
+      $emailquery = "SELECT email, book_name, receipt_number FROM return_form rf
+      INNER JOIN borrowed_book bb
+      ON rf.borrowID = bb.borrowID
+      INNER JOIN patron_acc pa
+      ON pa.patronID = bb.patronID
+      INNER JOIN book b
+      ON bb.bookID = b.bookID
+      WHERE rf.borrowID = $borrowID";
+
+      if(mysqli_query($conn, $emailquery)){
+        $emailresult = mysqli_query($conn, $emailquery);
+        $emailrow = mysqli_fetch_assoc($emailresult);
+        $email = trim($emailrow['email']);
+        $book = $emailrow['book_name'];
+        $receipt = $emailrow['receipt_number'];
+
+        $message = "Your request to return the book <b>'$book'</b> with receipt number: <b>'$receipt'</b> has been approved.";
+
+        //dtldbwzroixdlthq
+        try {
+          //Server settings
+          $mail->isSMTP();                                            //Send using SMTP
+          $mail->SMTPAuth   = true;
+          $mail->SMTPSecure = 'ssl';
+          $mail->Host       = 'smtp.gmail.com';
+          $mail->Port       = 465;
+          $mail->Username   = 'adamson.scribe@gmail.com';                     //SMTP username
+          $mail->Password   = 'qfwzlywxozzclfun';                               //SMTP password
+
+          //Recipients
+          $mail->setFrom('adamson.scribe@gmail.com', 'Adamson SCRIBE');
+          $mail->addAddress($email);     //Add a recipient
+
+
+          //Content
+          $mail->isHTML(true);                                  //Set email format to HTML
+          $mail->Subject = 'Book Return Successful | SCRIBE';
+          $mail->Body    = $message;
+
+
+          $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+          $mail->send();
+
+          $borrowdate = new DateTime($rowbdate["borrow_date"]);
+
+          $insquery = "INSERT INTO returned_book (bookID, patronID, librarianID, borrow_date, return_date, penalty_paid, receipt_number)
+          SELECT bookID, patronID, $id, borrow_date, '$currentDateTime', '$penaltycost', '$receiptnum'
+          FROM borrowed_book
+          WHERE borrowID = $borrowID";
+
+          if(mysqli_query($conn, $insquery)){
             // Insert was successful, now update the book availability
             $updatequery = "UPDATE book SET availability = '1' WHERE bookID IN (SELECT bookID FROM borrowed_book WHERE borrowID = $borrowID)";
             
@@ -105,27 +209,84 @@ if(isset($_POST["retpen"])){
                 else{
                     echo "<script>alert('Deleting error');</script>";
                 }
-            } else {
+            } 
+            else {
                 echo "<script>alert('Update error');</script>";
             }
+          }
             
         }
+        catch (Exception $e) {
+        echo "<script> alert('Message could not be sent. Mailer Error: {$mail->ErrorInfo}')</script>";
+        } 
+      }
+      }
     }
 
-}
+
+
 
 if(isset($_POST["rej"])){
+    $mail = new PHPMailer(true);
     $borrowID = $_POST["borrowID"];
 
-    // Prepare and execute the DELETE query
-    $deleteQuery = "DELETE FROM return_form WHERE borrowID = $borrowID";
+    $emailquery = "SELECT email, book_name, receipt_number FROM return_form rf
+    INNER JOIN borrowed_book bb
+    ON rf.borrowID = bb.borrowID
+    INNER JOIN patron_acc pa
+    ON pa.patronID = bb.patronID
+    INNER JOIN book b
+    ON bb.bookID = b.bookID
+    WHERE rf.borrowID = $borrowID";
 
-    if(mysqli_query($conn, $deleteQuery)){
-        // Success message if the row is deleted
-        echo "<script>alert('Return Request Rejected Successfully');</script>";
-    } else {
-        // Error message if deletion fails
-        echo "<script>alert('Failed to delete return record');</script>";
+    if(mysqli_query($conn, $emailquery)){
+      $emailresult = mysqli_query($conn, $emailquery);
+      $emailrow = mysqli_fetch_assoc($emailresult);
+      $email = trim($emailrow['email']);
+      $book = $emailrow['book_name'];
+      $receipt = $emailrow['receipt_number'];
+
+      $message = "Your request to return the book <b>'$book'</b> has been rejected.";
+
+      try {
+        //Server settings
+        $mail->isSMTP();                                            //Send using SMTP
+        $mail->SMTPAuth   = true;
+        $mail->SMTPSecure = 'ssl';
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->Port       = 465;
+        $mail->Username   = 'adamson.scribe@gmail.com';                     //SMTP username
+        $mail->Password   = 'qfwzlywxozzclfun';                               //SMTP password
+
+        //Recipients
+        $mail->setFrom('adamson.scribe@gmail.com', 'Adamson SCRIBE');
+        $mail->addAddress($email);     //Add a recipient
+
+
+        //Content
+        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->Subject = 'Book Return Rejected | SCRIBE';
+        $mail->Body    = $message;
+
+
+        $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+        $mail->send();
+
+        // Prepare and execute the DELETE query
+        $deleteQuery = "DELETE FROM return_form WHERE borrowID = $borrowID";
+
+        if(mysqli_query($conn, $deleteQuery)){
+            // Success message if the row is deleted
+            echo "<script>alert('Return Request Rejected Successfully');</script>";
+        } else {
+            // Error message if deletion fails
+            echo "<script>alert('Failed to delete return record');</script>";
+        }
+      }
+      catch (Exception $e) {
+        echo "<script> alert('Message could not be sent. Mailer Error: {$mail->ErrorInfo}')</script>";
+      } 
     }
 }
 
